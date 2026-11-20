@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 1 · Food Delivery Data Exploration and Analysis 1</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-key="aiml3-df-c01" data-class="Class 1" data-title="Food Delivery Data Exploration and Analysis 1" data-course="Data Foundations · AIML Jul-Aug26 Batch 3" data-date="2026-11-20" data-tool-url="https://colab.research.google.com/" data-tool-label="Colab">
+
+<div class="cover" id="cover">
+  <h1><small>Class 1</small>Food Delivery Data Exploration and Analysis 1</h1>
+  <div class="by">Prateek Vijay</div>
+</div>
+
+<main class="main"><div class="wrap">
+
+<section class="step" data-nav="Two biryani shops" data-tag="Why data">
+  <h2>Two biryani shops on the same street</h2>
+  <div class="ask"><span class="ic">✋</span><div>Same biryani, same price. Shop A cooks by guess. Shop B looks at last month's orders first. Who wins?</div></div>
+  <div class="vote">
+    <div class="vopt">Shop A: experience is enough</div>
+    <div class="vopt" data-win>Shop B: it knows what its customers do</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Friday night sells double: Shop B cooks more on Friday.</li>
+      <li>Most orders come from one area: it keeps its riders there.</li>
+      <li>Ratings fall when delivery takes over 40 minutes: it fixes that first.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x1g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="182" y="12" width="49" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="206.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">data</text><line x1="234" y1="32.0" x2="254" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x1)"/><rect x="257" y="12" width="84" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="299" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">a pattern</text><line x1="344" y1="32.0" x2="364" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x1)"/><rect x="367" y="12" width="91" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="412.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">a decision</text></svg><div class="cap">Data turns a guess into a decision.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="No data, no AI" data-tag="Why data">
+  <h2>Every AI you have used was built from data</h2>
+  <table class="tbl" data-cells>
+    <tr><th>The AI</th><th>The data it learned from</th></tr>
+    <tr><td>ChatGPT, Claude, Gemini</td><td>text written by people</td></tr>
+    <tr><td>Netflix and YouTube suggestions</td><td>what users watched</td></tr>
+    <tr><td>Delivery time on a food app</td><td>lakhs of past orders</td></tr>
+    <tr><td>A bank's loan model</td><td>past loans: who repaid</td></tr>
+  </table>
+  <div class="take">No data, no AI. Bad data, bad AI.</div>
+</section>
+
+<section class="step" data-nav="Where the time goes" data-tag="Why data">
+  <h2>Where does a data scientist's time go?</h2>
+  <div class="ask"><span class="ic">✋</span><div>Out of every 100 hours of work, which job takes the most?</div></div>
+  <div class="vote">
+    <div class="vopt">Choosing the model</div>
+    <div class="vopt">Training the model</div>
+    <div class="vopt" data-win>Loading and cleaning the data</div>
+    <div class="vopt">Deploying the model</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">See the survey</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Loading and cleaning: 45 hours. Charts: 21 hours.</li>
+      <li>The model itself is the smaller part.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg"><text x="238" y="31" text-anchor="end" font-size="13" font-weight="700" fill="#0f172a">Loading and cleaning data</text><rect x="250" y="10" width="288" height="30" rx="4" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="548" y="31" text-anchor="start" font-size="14" font-weight="700" fill="#047857">45%</text><text x="238" y="69" text-anchor="end" font-size="13" font-weight="700" fill="#0f172a">Charts: visualising the data</text><rect x="250" y="48" width="134" height="30" rx="4" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="394" y="69" text-anchor="start" font-size="14" font-weight="700" fill="#047857">21%</text><text x="238" y="107" text-anchor="end" font-size="13" fill="#0f172a">Training the model</text><rect x="250" y="86" width="77" height="30" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="337" y="107" text-anchor="start" font-size="14" fill="#334155">12%</text><text x="238" y="145" text-anchor="end" font-size="13" fill="#0f172a">Choosing the model</text><rect x="250" y="124" width="70" height="30" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="330" y="145" text-anchor="start" font-size="14" fill="#334155">11%</text><text x="238" y="183" text-anchor="end" font-size="13" fill="#0f172a">Deploying the model</text><rect x="250" y="162" width="70" height="30" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="330" y="183" text-anchor="start" font-size="14" fill="#334155">11%</text></svg><div class="cap">Green is this module: 66 of every 100 hours. Survey of 2,360 data people, their own estimates (<a href="https://know.anaconda.com/rs/387-XNW-688/images/Anaconda-SODS-Report-2020-Final.pdf" target="_blank">Anaconda, State of Data Science 2020</a>).</div></div>
+</section>
+
+<section class="step" data-nav="This module" data-tag="Why data">
+  <h2>What this module gives you</h2>
+  <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x2r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x2g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="58" y="12" width="91" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="103.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">a raw file</text><line x1="152" y1="32.0" x2="172" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x2)"/><rect x="175" y="12" width="77" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="213.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">clean it</text><line x1="255" y1="32.0" x2="275" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x2)"/><rect x="278" y="12" width="91" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="323.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">analyse it</text><line x1="372" y1="32.0" x2="392" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x2)"/><rect x="395" y="12" width="70" height="40" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="430" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">draw it</text><line x1="468" y1="32.0" x2="488" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x2)"/><rect x="491" y="12" width="91" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="536.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">a decision</text></svg><div class="cap">Ten classes. This one journey, three times.</div></div>
+  <table class="tbl">
+    <tr><th>Classes</th><th>The data</th><th>The tools</th></tr>
+    <tr><td>1 to 5</td><td>Restaurants on a food delivery app</td><td>NumPy, Pandas</td></tr>
+    <tr><td>6 to 9</td><td>Amazon sales</td><td>Pandas, Matplotlib, Seaborn</td></tr>
+    <tr><td>10</td><td>Sachin Tendulkar's ODI career</td><td>all of them</td></tr>
+  </table>
+  <div class="take" data-brk>After this module: give you a raw file and a business question, and you return an answer with a chart.</div>
+</section>
+
+<section class="step" data-nav="Loan" data-tag="Machine learning">
+  <h2>A bank has one loan of ₹20 lakh. Who gets it?</h2>
+  <div class="ask"><span class="ic">✋</span><div>Two people apply. You know only their income. Whom do you choose?</div></div>
+  <div class="diag"><svg viewBox="0 0 640 86" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="10" width="160" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="120" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">What we know</text><rect x="204" y="10" width="196" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="302" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Candidate 1</text><rect x="404" y="10" width="196" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="502" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Candidate 2</text><rect x="40" y="46" width="160" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="120" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">Income</text><rect x="204" y="46" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="302" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">₹5 lakh a month</text><rect x="404" y="46" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="502" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">₹5 lakh a year</text></svg></div>
+  <div class="vote">
+    <div class="vopt" data-win>Candidate 1</div>
+    <div class="vopt">Candidate 2</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Most people choose Candidate 1: a bigger income can repay faster.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">🎤</span><div>Two more facts. Still sure?</div></div>
+  <div class="diag"><svg viewBox="0 0 640 158" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="10" width="160" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="120" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">What we know</text><rect x="204" y="10" width="196" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="302" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Candidate 1</text><rect x="404" y="10" width="196" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="502" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Candidate 2</text><rect x="40" y="46" width="160" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="120" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">Income</text><rect x="204" y="46" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="302" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">₹5 lakh a month</text><rect x="404" y="46" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="502" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">₹5 lakh a year</text><rect x="40" y="82" width="160" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="120" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">Owns a flat in</text><rect x="204" y="82" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="302" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">Bengaluru</text><rect x="404" y="82" width="196" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="502" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">Jaipur</text><rect x="40" y="118" width="160" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="120" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">Lives in</text><rect x="204" y="118" width="196" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="302" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">London</text><rect x="404" y="118" width="196" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="502" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">Haryana</text></svg></div>
+  <ul class="b" data-brk><li>A big income, a flat in Bengaluru, now living in London. Sounds familiar?</li><li>A joke. But notice what you did: you used a case from the <b>past</b>.</li><li>Banks do the same, with millions of past cases. That is machine learning.</li></ul>
+</section>
+
+<section class="step" data-nav="Salary pattern" data-tag="Machine learning">
+  <h2>Find the pattern: salary and experience</h2>
+  <table class="tbl">
+    <tr><th>Experience</th><th>Salary</th></tr>
+    <tr><td>1 year</td><td>₹10k</td></tr>
+    <tr><td>2 years</td><td>₹20k</td></tr>
+    <tr><td>3 years</td><td>₹30k</td></tr>
+  </table>
+  <div class="ask"><span class="ic">✋</span><div>What is the salary for 6 years of experience?</div></div>
+  <div class="vote">
+    <div class="vopt">₹40k</div>
+    <div class="vopt" data-win>₹60k</div>
+    <div class="vopt">Cannot say: 6 years is not in the data</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>You found a pattern: <b>salary = years × ₹10k</b>.</li>
+      <li>You did it from 3 records. A machine finds such patterns across 10 million records.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 228" xmlns="http://www.w3.org/2000/svg"><line x1="90" y1="200" x2="602.0" y2="200" stroke="#94a3b8" stroke-width="2"/><line x1="90" y1="200" x2="90" y2="20" stroke="#94a3b8" stroke-width="2"/><text x="170" y="218" text-anchor="middle" font-size="12" fill="#64748b">1 yr</text><text x="250" y="218" text-anchor="middle" font-size="12" fill="#64748b">2 yr</text><text x="330" y="218" text-anchor="middle" font-size="12" fill="#64748b">3 yr</text><text x="410" y="218" text-anchor="middle" font-size="12" fill="#64748b">4 yr</text><text x="490" y="218" text-anchor="middle" font-size="12" fill="#64748b">5 yr</text><text x="570" y="218" text-anchor="middle" font-size="12" fill="#64748b">6 yr</text><text x="80" y="178.0" text-anchor="end" font-size="12" fill="#64748b">₹10k</text><text x="80" y="152.0" text-anchor="end" font-size="12" fill="#64748b">₹20k</text><text x="80" y="126.0" text-anchor="end" font-size="12" fill="#64748b">₹30k</text><text x="80" y="48.0" text-anchor="end" font-size="12" fill="#64748b">₹60k</text><line x1="170" y1="174.0" x2="570" y2="44.0" stroke="#6366f1" stroke-width="2" stroke-dasharray="6 5"/><circle cx="170" cy="174.0" r="7" fill="#6366f1"/><circle cx="250" cy="148.0" r="7" fill="#6366f1"/><circle cx="330" cy="122.0" r="7" fill="#6366f1"/><circle cx="570" cy="44.0" r="8" fill="#10b981"/><text x="556" y="30.0" text-anchor="end" font-size="13" font-weight="700" fill="#047857">predicted: ₹60k</text><text x="266.0" y="111.6" text-anchor="end" font-size="12" fill="#4f46e5">3 records</text></svg><div class="cap">The three points sit on one line. Extend the line, and you have a prediction.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="A mother knows" data-tag="Machine learning">
+  <h2>How does your mother know when you are lying?</h2>
+  <div class="ask"><span class="ic">🎤</span><div>She has no proof in that moment. Still she says "something feels wrong". How?</div></div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x3r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x3g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="14" y="12" width="166" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="97" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">years of watching you</text><line x1="182" y1="32.0" x2="202" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x3)"/><rect x="206" y="12" width="187" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="299.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">she learns your patterns</text><line x1="396" y1="32.0" x2="416" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x3)"/><rect x="418" y="12" width="208" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="522" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">today: "something is wrong"</text></svg><div class="cap">More history, better guesses. A machine also needs a lot of data.</div></div>
+</section>
+
+<section class="step" data-nav="Netflix" data-tag="Machine learning">
+  <h2>Netflix: every click is data</h2>
+  <ul class="b"><li>Netflix has more than <b>250 million</b> users.</li><li>Each one watches, pauses, rewinds, drops a show halfway. Every action is <b>data</b>.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>A user takes the free month, then cancels. Is that a loss for Netflix?</div></div>
+  <div class="vote">
+    <div class="vopt">No: the trial was free anyway</div>
+    <div class="vopt" data-win>Yes: Netflix paid to get that user</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Netflix paid for ads to get that user, and earned nothing.</li>
+      <li>So its real job is to <b>keep</b> you. It must guess what you will watch next.</li>
+      <li>It learns that from what millions of users watched, paused and dropped.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x4r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x4g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="55" y="12" width="111" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="110.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">what users do</text><line x1="169" y1="32.0" x2="189" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x4)"/><rect x="192" y="12" width="77" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="230.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">patterns</text><line x1="272" y1="32.0" x2="292" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x4)"/><rect x="295" y="12" width="173" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="381.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">better recommendations</text><line x1="471" y1="32.0" x2="491" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x4)"/><rect x="494" y="12" width="91" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="539.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">users stay</text></svg></div>
+  </div>
+  <div class="take">Companies make better decisions when they learn patterns from data.</div>
+</section>
+
+<section class="step" data-nav="ML in one line" data-tag="Machine learning">
+  <h2>Machine learning, in one line</h2>
+  <div class="take">Machine learning: a machine learns from experience, history and patterns, the way humans do.</div>
+  <table class="tbl" data-cells>
+    <tr><th>Example</th><th>What was learned from the past</th></tr>
+    <tr><td>The bank loan</td><td>who repays, and who does not</td></tr>
+    <tr><td>Salary</td><td>salary = years × ₹10k</td></tr>
+    <tr><td>Your mother</td><td>how you behave when you lie</td></tr>
+    <tr><td>Netflix</td><td>what keeps a user watching</td></tr>
+  </table>
+  <div class="quiz" data-level="s" data-wide>
+    <div class="qt">Which one is machine learning?</div>
+    
+    <div class="opts">
+      <button class="opt">A calculator adding two numbers</button>
+      <button class="opt">A program that prints "Hello"</button>
+      <button class="opt" data-ok>A bank model that flags a payment as unusual, after learning from millions of old payments</button>
+      <button class="opt">A file that stores payments</button>
+    </div>
+    <div class="expl"><b>The bank model.</b> It learned patterns from history and uses them on something new. The others follow fixed steps and learn nothing.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x5r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x5g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="58" y="12" width="194" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="155" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">millions of past payments</text><line x1="255" y1="32.0" x2="275" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x5)"/><rect x="278" y="12" width="77" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="316.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">patterns</text><line x1="358" y1="32.0" x2="378" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x5)"/><rect x="381" y="12" width="201" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="481.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">this payment looks unusual</text></svg></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Where is the line?" data-tag="Machine learning">
+  <h2>What is machine learning, and what is not?</h2>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">A food delivery app has four jobs. Which one needs machine learning?</div>
+    
+    <div class="opts">
+      <button class="opt">Sort 2 lakh restaurants by rating</button>
+      <button class="opt">Give ₹50 off to every user who has not ordered for 30 days</button>
+      <button class="opt">Add 5% GST to each bill</button>
+      <button class="opt" data-ok>Estimate the delivery time of a new order, from lakhs of past orders</button>
+    </div>
+    <div class="expl"><b>The delivery time.</b> Nobody can write that rule by hand: traffic, rain, the hour. The machine finds it from past orders. Sorting and the 30-day offer also use data, but a person wrote those rules.
+<div class="diag"><svg viewBox="0 0 640 112" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x6r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x6g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="10" y="34" text-anchor="start" font-size="13" font-weight="700" fill="#0f172a">Normal program</text><rect x="150" y="12" width="70" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="185" y="33.5" text-anchor="middle" font-size="13" fill="#0f172a">data</text><text x="229" y="34" text-anchor="middle" font-size="15" fill="#64748b">+</text><rect x="238" y="12" width="180" height="34" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="328" y="33.5" text-anchor="middle" font-size="13" fill="#0f172a">rule, written by a person</text><line x1="422" y1="29" x2="444" y2="29" stroke="#64748b" stroke-width="2" marker-end="url(#k375x6)"/><rect x="448" y="12" width="182" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="539" y="33.5" text-anchor="middle" font-size="13" fill="#0f172a">answers</text><text x="10" y="88" text-anchor="start" font-size="13" font-weight="700" fill="#0f172a">Machine learning</text><rect x="150" y="66" width="70" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="185" y="87.5" text-anchor="middle" font-size="13" fill="#0f172a">data</text><text x="229" y="88" text-anchor="middle" font-size="15" fill="#64748b">+</text><rect x="238" y="66" width="180" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="328" y="87.5" text-anchor="middle" font-size="13" fill="#0f172a">past answers</text><line x1="422" y1="83" x2="444" y2="83" stroke="#64748b" stroke-width="2" marker-end="url(#k375x6)"/><rect x="448" y="66" width="182" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="539" y="87.5" text-anchor="middle" font-size="13" fill="#0f172a">rule, found by the machine</text></svg><div class="cap">Machine learning: the rule comes from the data.</div></div></div>
+  </div>
+  <ul class="b" data-brk><li>Before a machine can learn, <b>we</b> must understand the data. That is EDA.</li></ul>
+</section>
+
+<section class="step" data-nav="What is EDA?" data-tag="EDA">
+  <h2>EDA: look at everything before you decide</h2>
+  <div class="ask"><span class="ic">🎤</span><div>Before you choose a movie to watch, what do you check?</div></div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 84" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="12" width="116" height="60" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="68" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Rating</text><line x1="18" y1="40" x2="118" y2="40" stroke="#6366f1" stroke-width="1"/><text x="68" y="60" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">8.6 / 10</text><rect x="136" y="12" width="116" height="60" rx="8" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="194" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Reviews</text><line x1="144" y1="40" x2="244" y2="40" stroke="#0ea5e9" stroke-width="1"/><text x="194" y="60" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">what people say</text><rect x="262" y="12" width="116" height="60" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/><text x="320" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Actors</text><line x1="270" y1="40" x2="370" y2="40" stroke="#a855f7" stroke-width="1"/><text x="320" y="60" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">and director</text><rect x="388" y="12" width="116" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="446" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Type</text><line x1="396" y1="40" x2="496" y2="40" stroke="#ef4444" stroke-width="1"/><text x="446" y="60" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">comedy, action</text><rect x="514" y="12" width="116" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="572" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Price</text><line x1="522" y1="40" x2="622" y2="40" stroke="#f59e0b" stroke-width="1"/><text x="572" y="60" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">ticket or plan</text></svg></div>
+  <ul class="b" data-brk><li><b>EDA</b>, Exploratory Data Analysis: explore every feature of the data before you decide.</li><li>Zomato launched "Pure Veg" delivery after analysing orders, reviews and costs. Not a random choice.</li></ul>
+</section>
+
+<section class="step" data-nav="What to measure" data-tag="EDA">
+  <h2>First decide what to measure</h2>
+  <div class="ask"><span class="ic">✋</span><div>Three movies are showing tonight. Which one is the best?</div></div>
+  <div class="diag"><svg viewBox="0 0 640 158" xmlns="http://www.w3.org/2000/svg"><rect x="54" y="10" width="130" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="119" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Movie</text><rect x="188" y="10" width="130" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="253" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Rating</text><rect x="322" y="10" width="130" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="387" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Ticket price</text><rect x="456" y="10" width="130" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="521" y="29.5" text-anchor="middle" font-size="13" fill="#0f172a">Length</text><rect x="54" y="46" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="119" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">Movie A</text><rect x="188" y="46" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="253" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">8.6 / 10</text><rect x="322" y="46" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="387" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">₹450</text><rect x="456" y="46" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="521" y="66.5" text-anchor="middle" font-size="13" fill="#0f172a">3h 05m</text><rect x="54" y="82" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="119" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">Movie B</text><rect x="188" y="82" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="253" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">7.8 / 10</text><rect x="322" y="82" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="387" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">₹250</text><rect x="456" y="82" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="521" y="102.5" text-anchor="middle" font-size="13" fill="#0f172a">2h 10m</text><rect x="54" y="118" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="119" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">Movie C</text><rect x="188" y="118" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="253" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">6.9 / 10</text><rect x="322" y="118" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="387" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">₹150</text><rect x="456" y="118" width="130" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="521" y="138.5" text-anchor="middle" font-size="13" fill="#0f172a">2h 40m</text></svg></div>
+  <div class="vote">
+    <div class="vopt">Movie A</div>
+    <div class="vopt">Movie B</div>
+    <div class="vopt">Movie C</div>
+    <div class="vopt" data-win>First tell me what "best" means</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Highest rated: A. Cheapest: C. Shortest: B.</li>
+      <li>The data did not change. The <b>measure</b> decides the answer.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 228" xmlns="http://www.w3.org/2000/svg"><text x="117" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#4338ca">Rating</text><line x1="30" y1="172" x2="204" y2="172" stroke="#94a3b8" stroke-width="2"/><rect x="42" y="62" width="40" height="110" rx="4" fill="#6366f1" stroke="#6366f1" stroke-width="2"/><text x="62" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">8.6</text><text x="62" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">A</text><rect x="97" y="72" width="40" height="100" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="117" y="65" text-anchor="middle" font-size="12" fill="#0f172a">7.8</text><text x="117" y="190" text-anchor="middle" font-size="13" fill="#334155">B</text><rect x="152" y="84" width="40" height="88" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="172" y="77" text-anchor="middle" font-size="12" fill="#0f172a">6.9</text><text x="172" y="190" text-anchor="middle" font-size="13" fill="#334155">C</text><text x="117" y="216" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">highest: Movie A</text><text x="322" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">Ticket price</text><line x1="235" y1="172" x2="409" y2="172" stroke="#94a3b8" stroke-width="2"/><rect x="247" y="62" width="40" height="110" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="267" y="55" text-anchor="middle" font-size="12" fill="#0f172a">₹450</text><text x="267" y="190" text-anchor="middle" font-size="13" fill="#334155">A</text><rect x="302" y="111" width="40" height="61" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="322" y="104" text-anchor="middle" font-size="12" fill="#0f172a">₹250</text><text x="322" y="190" text-anchor="middle" font-size="13" fill="#334155">B</text><rect x="357" y="135" width="40" height="37" rx="4" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"/><text x="377" y="128" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">₹150</text><text x="377" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">C</text><text x="322" y="216" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">cheapest: Movie C</text><text x="527" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#047857">Length</text><line x1="440" y1="172" x2="614" y2="172" stroke="#94a3b8" stroke-width="2"/><rect x="452" y="62" width="40" height="110" rx="4" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="472" y="55" text-anchor="middle" font-size="12" fill="#0f172a">3h 05m</text><text x="472" y="190" text-anchor="middle" font-size="13" fill="#334155">A</text><rect x="507" y="95" width="40" height="77" rx="4" fill="#10b981" stroke="#10b981" stroke-width="2"/><text x="527" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">2h 10m</text><text x="527" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">B</text><rect x="562" y="77" width="40" height="95" rx="4" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="582" y="70" text-anchor="middle" font-size="12" fill="#0f172a">2h 40m</text><text x="582" y="190" text-anchor="middle" font-size="13" fill="#334155">C</text><text x="527" y="216" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">shortest: Movie B</text></svg><div class="cap">Same three movies. Three measures. Three different winners.</div></div>
+  </div>
+  <div class="take">EDA: decide what to measure, then look at every measure before you choose.</div>
+</section>
+
+<section class="step" data-nav="Why EDA: wrong patterns" data-tag="EDA">
+  <h2>Why EDA? A machine has no common sense</h2>
+  <div class="diag"><svg viewBox="0 0 640 136" xmlns="http://www.w3.org/2000/svg"><rect x="170" y="10" width="100" height="30" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/><text x="220" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">S.No</text><rect x="270" y="10" width="100" height="30" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/><text x="320" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Experience</text><rect x="370" y="10" width="100" height="30" fill="#e0e7ff" stroke="#6366f1" stroke-width="1"/><text x="420" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Salary</text><rect x="170" y="40" width="100" height="30" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/><text x="220" y="60" text-anchor="middle" font-size="13" fill="#0f172a">1</text><rect x="270" y="40" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="320" y="60" text-anchor="middle" font-size="13" fill="#0f172a">1 year</text><rect x="370" y="40" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="420" y="60" text-anchor="middle" font-size="13" fill="#0f172a">₹10k</text><rect x="170" y="70" width="100" height="30" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/><text x="220" y="90" text-anchor="middle" font-size="13" fill="#0f172a">2</text><rect x="270" y="70" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="320" y="90" text-anchor="middle" font-size="13" fill="#0f172a">2 years</text><rect x="370" y="70" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="420" y="90" text-anchor="middle" font-size="13" fill="#0f172a">₹20k</text><rect x="170" y="100" width="100" height="30" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/><text x="220" y="120" text-anchor="middle" font-size="13" fill="#0f172a">3</text><rect x="270" y="100" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="320" y="120" text-anchor="middle" font-size="13" fill="#0f172a">3 years</text><rect x="370" y="100" width="100" height="30" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="420" y="120" text-anchor="middle" font-size="13" fill="#0f172a">₹30k</text></svg></div>
+  <div class="ask"><span class="ic">✋</span><div>A machine studies this table to predict salary. Which column can fool it?</div></div>
+  <div class="vote">
+    <div class="vopt">Experience</div>
+    <div class="vopt" data-win>S.No, the serial number</div>
+    <div class="vopt">Salary</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>The serial number rises with the salary too. A machine may think it <b>causes</b> the salary.</li>
+      <li>You know it means nothing. The machine does not. Removing that column is EDA.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x7r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x7g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="86" y="12" width="91" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="131.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">S.No rises</text><line x1="180" y1="32.0" x2="200" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x7)"/><rect x="202" y="12" width="104" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="254" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">salary rises</text><line x1="310" y1="32.0" x2="330" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x7)"/><rect x="332" y="12" width="222" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="443" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">machine: "S.No causes salary"</text></svg><div class="cap">A pattern can be real in the data and still be meaningless.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Why EDA: messy data" data-tag="EDA">
+  <h2>Why EDA? Real data is messy</h2>
+  <ul class="b"><li>Data comes from forms, apps and web pages. It is rarely ready for maths.</li></ul>
+  <table class="tbl" data-cells>
+    <tr><th>What the data holds</th><th>What maths needs</th></tr>
+    <tr><td><code>"10k"</code></td><td><code>10000</code></td></tr>
+    <tr><td><code>"4.1/5"</code></td><td><code>4.1</code></td></tr>
+    <tr><td><code>"'800.0'"</code>, a cost kept as text</td><td><code>800.0</code></td></tr>
+    <tr><td><code>"1,200"</code></td><td><code>1200</code></td></tr>
+  </table>
+  <div class="take">Clean first, then calculate. Today we meet this exact problem in our own data.</div>
+</section>
+
+<section class="step" data-nav="Dots and commas" data-tag="EDA">
+  <h2>Messy data: the same number, written another way</h2>
+  <div class="ask"><span class="ic">✋</span><div>A German price file lists a laptop at <code>1.200</code> euros. What does Python read?</div></div>
+  <pre class="py" data-file="prices.py">print(float("1.200"))</pre>
+  <div class="vote">
+    <div class="vopt">1200.0</div>
+    <div class="vopt" data-win>1.2</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">1.2</div>
+    <ul class="b">
+      <li>In Germany the dot groups thousands, and the comma marks decimals.</li>
+      <li>No error. A 1,200 euro laptop became 1.2 euros.</li>
+      <li>A wrong number with no error is the hardest bug to find.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 186" xmlns="http://www.w3.org/2000/svg"><text x="210" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">Where</text><text x="450" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">How 1200.50 is written</text><rect x="100" y="32" width="220" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="52.5" text-anchor="middle" font-size="13" fill="#0f172a">India, US, UK</text><rect x="340" y="32" width="220" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="450" y="52.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">1,200.50</text><rect x="100" y="70" width="220" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="90.5" text-anchor="middle" font-size="13" fill="#0f172a">Germany, Spain, Italy</text><rect x="340" y="70" width="220" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="450" y="90.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">1.200,50</text><rect x="100" y="108" width="220" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="128.5" text-anchor="middle" font-size="13" fill="#0f172a">France</text><rect x="340" y="108" width="220" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="450" y="128.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">1 200,50</text><rect x="100" y="146" width="220" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="166.5" text-anchor="middle" font-size="13" fill="#0f172a">Switzerland</text><rect x="340" y="146" width="220" height="32" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="450" y="166.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">1'200.50</text></svg><div class="cap">One number, four spellings. Germany swaps the dot and the comma.</div></div>
+  <ul class="b"><li>Before any maths: ask where the data came from, then clean it into one format.</li></ul>
+</section>
+
+<section class="step" data-nav="DAV: the tools" data-tag="EDA">
+  <h2>EDA is the job. DAV is the toolkit.</h2>
+  <div class="ask"><span class="ic">🎤</span><div>Three movies: explored by hand. Thousands of restaurants: how?</div></div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 158" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x8r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x8g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="190" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">What EDA asks us to do</text><text x="520" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">The tool</text><rect x="20" y="32" width="340" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="190" y="53.5" text-anchor="middle" font-size="13" fill="#0f172a">Maths on many numbers: totals, averages</text><line x1="364" y1="49" x2="416" y2="49" stroke="#64748b" stroke-width="2" marker-end="url(#k375x8)"/><rect x="420" y="32" width="200" height="34" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="520" y="53.5" text-anchor="middle" font-size="13" fill="#0f172a">NumPy</text><rect x="20" y="74" width="340" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="190" y="95.5" text-anchor="middle" font-size="13" fill="#0f172a">Tables with many columns, cleaning text</text><line x1="364" y1="91" x2="416" y2="91" stroke="#64748b" stroke-width="2" marker-end="url(#k375x8)"/><rect x="420" y="74" width="200" height="34" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="520" y="95.5" text-anchor="middle" font-size="13" fill="#0f172a">Pandas</text><rect x="20" y="116" width="340" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="190" y="137.5" text-anchor="middle" font-size="13" fill="#0f172a">Charts, like the three bar charts</text><line x1="364" y1="133" x2="416" y2="133" stroke="#64748b" stroke-width="2" marker-end="url(#k375x8)"/><rect x="420" y="116" width="200" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="520" y="137.5" text-anchor="middle" font-size="13" fill="#0f172a">Matplotlib, Seaborn</text></svg><div class="cap">Each tool does one part of the job.</div></div>
+  <ul class="b" data-brk><li><b>DAV</b>, Data Analysis and Visualization: the tools that do EDA on real data.</li><li>We start with NumPy today.</li></ul>
+</section>
+
+<section class="step" data-nav="Our dataset" data-tag="Dataset">
+  <h2>Our data: restaurants on a food delivery app</h2>
+  <ul class="b"><li>You are a data analyst at a company like Zomato.</li><li>Today: a practice dataset of <b>10 restaurants</b>. The real Zomato data comes later.</li></ul>
+  <div class="diag"><img src="https://d2beiqkhq929f0.cloudfront.net/public_assets/assets/000/185/672/original/hehe.png?1774269926" alt="Zomato rating screens for dining and delivery" style="display:block;margin:0 auto;max-width:100%;max-height:42vh"><div class="cap">Every rating a customer gives becomes one vote.</div></div>
+  <table class="tbl">
+    <tr><th>Column</th><th>What it holds</th><th>Examples</th></tr>
+    <tr><td><code>votes</code></td><td>how many customer ratings a restaurant got</td><td>775, 787, 918</td></tr>
+    <tr><td><code>costs</code></td><td>average cost for two people, in ₹</td><td>800.0, 300.0, 600.0</td></tr>
+  </table>
+  <div class="ask"><span class="ic">🎤</span><div>Your manager has three questions for you:</div></div>
+  <ul class="b"><li>Which restaurants are most popular?</li><li>Are popular places more expensive?</li><li>What is the average cost for two people?</li></ul>
+  <div class="take">By the end of today we answer the third one. First the data needs cleaning.</div>
+</section>
+
+<section class="step" data-nav="Colab" data-tag="Tools">
+  <h2>Google Colab: where we write code</h2>
+  <ul class="b"><li>A coding notebook in your browser. The code runs on Google's computers.</li><li>NumPy, Pandas and Matplotlib are already installed.</li><li>Open <a href="https://colab.research.google.com/" target="_blank">colab.research.google.com</a>, then <b>New notebook</b>. Run a cell: Shift + Enter.</li></ul>
+  <pre class="py" data-file="notebook cell" data-wide>import numpy as np</pre>
+  <div class="anat" data-brk><div class="a"><code>import numpy</code><div class="m">bring in the NumPy library</div></div><div class="a"><code>as np</code><div class="m">a short nickname, so you type np and not numpy every time</div></div><div class="a"><code>np</code><div class="m">any name works, even chintu, but everyone writes np</div></div></div>
+</section>
+
+<section class="step" data-nav="Python warm-up" data-tag="Tools">
+  <h2>Python warm-up: 30 seconds</h2>
+  <div class="ask"><span class="ic">🎤</span><div>You know these from the Python module. Say each answer, then flip the card.</div></div>
+  <div class="chips"><div class="chip"><div class="q">print("Hello AIML learners")</div><div class="a">Hello AIML learners</div></div><div class="chip"><div class="q">type(3)</div><div class="a">&lt;class 'int'&gt;</div></div><div class="chip"><div class="q">type("Hello")</div><div class="a">&lt;class 'str'&gt;</div></div><div class="chip"><div class="q">type([1, 2, 3, 4, 5])</div><div class="a">&lt;class 'list'&gt;</div></div><div class="chip"><div class="q">[1, 'python', 'Sri', True]</div><div class="a">Allowed. A list can mix types.</div></div></div>
+  <ul class="b" data-brk><li>Python works out the type by itself. You never declare it.</li><li>The last card: a list can mix types. A NumPy array cannot.</li></ul>
+</section>
+
+<section class="step" data-nav="AI in Colab" data-tag="Tools">
+  <h2>AI inside Colab</h2>
+  <ul class="b"><li>Colab has a built-in AI assistant, Gemini.</li><li><b>Generate</b>: ask it to write code in a cell.</li><li><b>Explain</b>: select code and ask what it does.</li><li><b>Chat</b>: ask questions about your notebook.</li></ul>
+  <div class="ai"><b>🤖 AI moment</b> — try the chat first. Then check one of its five points against what we said about EDA.<div class="pr">"What is Data exploration. Return the output in 5 pointers."</div></div>
+  <div class="take">In this module AI writes and explains. You predict, run and verify.</div>
+</section>
+
+<section class="step" data-nav="A list × 2" data-tag="NumPy">
+  <h2>A list is not built for maths</h2>
+  <div class="ask"><span class="ic">✋</span><div>You want to double every number. What does a Python list give?</div></div>
+  <pre class="py" data-file="list_vs_array.py">print([4, 5, 6] * 2)</pre>
+  <div class="vote">
+    <div class="vopt">[8, 10, 12]</div>
+    <div class="vopt" data-win>[4, 5, 6, 4, 5, 6]</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[4, 5, 6, 4, 5, 6]</div>
+    <ul class="b">
+      <li>The list was <b>repeated</b>, not doubled.</li>
+      <li>To double it you need a loop. With 10 million numbers that is slow.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 420 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="176" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="104" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">[4, 5, 6] * 2</text><text x="206" y="30" text-anchor="start" font-size="13" fill="#b91c1c">[4, 5, 6, 4, 5, 6]: repeated</text><rect x="16" y="50" width="176" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="104" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">what we wanted</text><text x="206" y="72" text-anchor="start" font-size="13" fill="#047857">[8, 10, 12]</text></svg><div class="cap">Lists repeat. We need something that calculates.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Our first arrays" data-tag="NumPy">
+  <h2>Our first NumPy array</h2>
+  <ul class="b"><li><b>NumPy</b> = <b>Num</b>erical <b>Py</b>thon.</li><li>Made by Travis Oliphant in 2005. Free and open source.</li><li>Pandas and most data libraries are built on it.</li></ul>
+  <pre class="py" data-file="list_vs_array.py" data-hl="3-4" data-wide>import numpy as np
+
+votes = np.array([775, 787, 918, 88, 166,
+                  286, 2556, 324, 504, 402])
+print("Votes (Array):", votes)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">Votes (Array): [ 775  787  918   88  166  286 2556  324  504  402]</div>
+    <ul class="b">
+      <li><code>np.array(...)</code> turns a list into an array.</li>
+      <li>It prints without commas: that is how you spot an array.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>One more line. What is the type of votes?</div></div>
+  <pre class="py" data-file="list_vs_array.py">print(type(votes))</pre>
+  <div class="vote">
+    <div class="vopt">&lt;class 'list'&gt;</div>
+    <div class="vopt" data-win>&lt;class 'numpy.ndarray'&gt;</div>
+    <div class="vopt">&lt;class 'array'&gt;</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">&lt;class 'numpy.ndarray'&gt;</div>
+    <ul class="b">
+      <li><b>ndarray</b>: n-dimensional array. It is the one object NumPy is built around.</li>
+    </ul>
+    
+  </div>
+</section>
+
+<section class="step" data-nav="An array × 2" data-tag="NumPy">
+  <h2>An array does the maths</h2>
+  <div class="ask"><span class="ic">✋</span><div>The same idea, now on an array. What does this give?</div></div>
+  <pre class="py" data-file="list_vs_array.py" data-hl="5">votes = np.array([
+    775, 787, 918, 88, 166,
+    286, 2556, 324, 504, 402])
+
+print(votes * 2)</pre>
+  <div class="vote">
+    <div class="vopt">The votes, repeated twice</div>
+    <div class="vopt" data-win>Every vote doubled</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[1550 1574 1836  176  332  572 5112  648 1008  804]</div>
+    <ul class="b">
+      <li>Every element was doubled, in one line, with no loop.</li>
+      <li>This is called <b>vectorization</b>: one operation, applied to the whole array at once.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 420 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="176" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="104" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">list * 2</text><text x="206" y="30" text-anchor="start" font-size="13" fill="#b91c1c">repeats the list</text><rect x="16" y="50" width="176" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="104" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">array * 2</text><text x="206" y="72" text-anchor="start" font-size="13" fill="#047857">doubles every element</text></svg><div class="cap">Same symbol, different behaviour.</div></div>
+  </div>
+  <div class="ai"><b>🤖 AI moment</b> — ask for more, then run each line and check the answers. Ours: <code>votes.sum()</code>, <code>votes.max()</code>, <code>votes.mean()</code> give <code>6806 2556 680.6</code>.<div class="pr">"I have a NumPy array called votes. Show me 3 useful operations I can do on it beyond multiplication, with one-line examples."</div></div>
+</section>
+
+<section class="step" data-nav="Why NumPy is fast" data-tag="NumPy">
+  <h2>Why is NumPy faster? Two tea rooms</h2>
+  <div class="ask"><span class="ic">🎤</span><div>Room 1: tea, sugar, milk and cups lie around the house. Room 2: all on one shelf. Where is tea ready first?</div></div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 204" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x9r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x9g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="160" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a Python list</text><text x="480" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a NumPy array</text><rect x="40" y="30" width="58" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="69" y="49.5" text-anchor="middle" font-size="11" fill="#0f172a">address</text><rect x="102" y="30" width="58" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="131" y="49.5" text-anchor="middle" font-size="11" fill="#0f172a">address</text><rect x="164" y="30" width="58" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="193" y="49.5" text-anchor="middle" font-size="11" fill="#0f172a">address</text><rect x="30" y="110" width="56" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="58" y="129.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><line x1="69" y1="62" x2="58" y2="106" stroke="#64748b" stroke-width="2" marker-end="url(#k375x9)"/><rect x="140" y="140" width="56" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="168" y="159.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><line x1="193" y1="62" x2="168" y2="136" stroke="#64748b" stroke-width="2" marker-end="url(#k375x9)"/><rect x="232" y="100" width="56" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="260" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><line x1="131" y1="62" x2="260" y2="96" stroke="#64748b" stroke-width="2" marker-end="url(#k375x9)"/><text x="160" y="192" text-anchor="middle" font-size="12" fill="#b91c1c">values scattered; the list keeps addresses</text><rect x="360" y="70" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="385" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="410" y="70" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="435" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="460" y="70" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="485" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="510" y="70" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="535" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="560" y="70" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="585" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="485" y="130" text-anchor="middle" font-size="12" fill="#047857">values side by side, one type</text><line x1="320" y1="8" x2="320" y2="196" stroke="#cbd5e1" stroke-width="1"/></svg><div class="cap">NumPy is Room 2.</div></div>
+  <ul class="b" data-brk><li><b>A list is Room 1.</b> It keeps addresses. The values lie around the house.</li><li><b>An array is Room 2.</b> The values sit side by side, all of one type: one shelf.</li></ul>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">In its block of memory, does a NumPy array store the address of each element or the value itself?</div>
+    
+    <div class="opts">
+      <button class="opt">The address of each element</button>
+      <button class="opt" data-ok>The actual value</button>
+      <button class="opt">Both, side by side</button>
+      <button class="opt">Neither: it stores the list</button>
+    </div>
+    <div class="expl"><b>The actual value.</b> No jumping around to find each number. That is the shelf in Room 2.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x10r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x10g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="225" y="12" width="45" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="247.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><line x1="273" y1="32.0" x2="273" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x10)"/><rect x="276" y="12" width="45" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="298.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><line x1="324" y1="32.0" x2="324" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x10)"/><rect x="327" y="12" width="45" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="349.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><line x1="375" y1="32.0" x2="375" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x10)"/><rect x="378" y="12" width="37" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="396.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text></svg><div class="cap">The values themselves, in a row.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Levels" data-tag="NumPy">
+  <h2>Why is NumPy faster? It works closer to the machine</h2>
+  <ul class="b"><li>Higher levels are easier for people. Lower levels are faster for the machine.</li></ul>
+  <div class="diag"><svg viewBox="0 0 640 184" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x11r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x11g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="176" y="12" width="130" height="34" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="241" y="33.5" text-anchor="middle" font-size="13" fill="#0f172a">Python</text><rect x="310" y="12" width="240" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="430" y="33.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">total = a + b</text><rect x="176" y="54" width="130" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="241" y="75.5" text-anchor="middle" font-size="13" fill="#0f172a">C / C++</text><rect x="310" y="54" width="240" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="430" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">int total = a + b;</text><rect x="176" y="96" width="130" height="34" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="241" y="117.5" text-anchor="middle" font-size="13" fill="#0f172a">Assembly</text><rect x="310" y="96" width="240" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="430" y="117.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">ADD AX, BX</text><rect x="176" y="138" width="130" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="241" y="159.5" text-anchor="middle" font-size="13" fill="#0f172a">Machine code</text><rect x="310" y="138" width="240" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="430" y="159.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">00000001 11011000</text><text x="160" y="34" text-anchor="end" font-size="12" font-weight="700" fill="#4338ca">easiest to write</text><line x1="112" y1="46" x2="112" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#k375x11)"/><text x="160" y="160" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">fastest to run</text></svg><div class="cap">The same addition at four levels. The machine only understands the last one.</div></div>
+  <ul class="b" data-brk><li>One billion loop steps: Rust takes 0.50 seconds. Python takes 74.42 seconds.</li><li>Watch them race: <a href="https://benjdd.com/languages/" target="_blank">1 billion loop iterations, by Benjamin Dicken</a>.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>We use NumPy from Python. Where does its loop over the numbers really run?</div></div>
+  <div class="vote">
+    <div class="vopt">In Python, one element at a time</div>
+    <div class="vopt" data-win>In compiled C code</div>
+    <div class="vopt">In assembly that we write ourselves</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>NumPy itself is written mostly in C.</li>
+      <li>You write one line of Python. The loop runs in compiled C.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x12r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x12g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="10" y="10" width="620" height="76" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/><rect x="10" y="108" width="620" height="62" rx="8" fill="#dcfce7" stroke="#10b981" stroke-width="1.5"/><text x="22" y="30" text-anchor="start" font-size="13" font-weight="700" fill="#4338ca">Python</text><text x="22" y="128" text-anchor="start" font-size="13" font-weight="700" fill="#047857">C, compiled</text><text x="215" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a Python loop</text><rect x="110" y="42" width="40" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="130" y="62.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">× 2</text><rect x="153" y="42" width="40" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="173" y="62.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">× 2</text><rect x="196" y="42" width="40" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="216" y="62.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">× 2</text><rect x="239" y="42" width="40" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="259" y="62.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">× 2</text><rect x="282" y="42" width="40" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="302" y="62.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">× 2</text><text x="215" y="101" text-anchor="middle" font-size="12" fill="#b91c1c">every step runs in Python: slow</text><text x="480" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">NumPy</text><rect x="425" y="42" width="110" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="480" y="62.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">votes * 2</text><line x1="480" y1="76" x2="480" y2="120" stroke="#64748b" stroke-width="2" marker-end="url(#k375x12)"/><text x="490" y="101" text-anchor="start" font-size="12" fill="#047857">one call</text><rect x="360" y="124" width="240" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="480" y="145.5" text-anchor="middle" font-size="13" fill="#0f172a">the loop over every number</text></svg><div class="cap">You write Python. NumPy runs the heavy loop in C.</div></div>
+  <div class="take">NumPy: easy like Python, fast like C.</div>
+</section>
+
+<section class="step" data-nav="See the speed" data-tag="NumPy">
+  <h2>See it: one million numbers</h2>
+  <pre class="py" data-file="why_numpy_is_faster.py" data-wide>import time
+import numpy as np
+
+n = 1_000_000
+numbers_list = list(range(n))
+numbers_array = np.arange(n)
+
+start = time.time()
+doubled_list = [x * 2 for x in numbers_list]
+list_seconds = time.time() - start
+
+start = time.time()
+doubled_array = numbers_array * 2
+array_seconds = time.time() - start
+
+print(f"List:  {list_seconds:.4f} seconds")
+print(f"Array: {array_seconds:.4f} seconds")
+times = list_seconds / array_seconds
+print(f"The array was about {times:.0f} times faster")</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">List:  0.0180 seconds
+Array: 0.0016 seconds
+The array was about 11 times faster</div>
+    <ul class="b">
+      <li>Your numbers will differ on every run and every machine. The gap stays.</li>
+      <li>For a food delivery company: millions of votes and ratings, processed in a moment.</li>
+    </ul>
+    
+  </div>
+  <div class="ai"><b>🤖 AI moment</b> — let Colab write its own speed test in an empty cell. Run it, and look only at the output, not the code.<div class="pr">"Generate me a code that showcases why Numpy arrays are faster than Python lists with a working example."</div></div>
+</section>
+
+<section class="step" data-nav="One type only" data-tag="NumPy">
+  <h2>An array holds one type only</h2>
+  <ul class="b"><li>Mix types, and NumPy converts everything to the "highest" one.</li></ul>
+  <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x13r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x13g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="152" y="12" width="70" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="187" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">Boolean</text><line x1="224" y1="32.0" x2="244" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x13)"/><rect x="248" y="12" width="70" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="283" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">Integer</text><line x1="320" y1="32.0" x2="340" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x13)"/><rect x="344" y="12" width="56" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="372" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">Float</text><line x1="402" y1="32.0" x2="422" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x13)"/><rect x="426" y="12" width="63" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="457.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">String</text></svg><div class="cap">Each type can become the one to its right. String is the highest.</div></div>
+  <table class="tbl" data-cells>
+    <tr><th>You write</th><th>NumPy stores</th></tr>
+    <tr><td><code>np.array([1, 2, 3.5])</code></td><td><code>[1.  2.  3.5]</code> all floats</td></tr>
+    <tr><td><code>np.array([1, "Akash", 3.5])</code></td><td><code>['1' 'Akash' '3.5']</code> all strings</td></tr>
+    <tr><td><code>np.array([True, 6])</code></td><td><code>[1 6]</code> True became 1</td></tr>
+  </table>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What does <code>np.array([10, 2.5, "7"])</code> store?</div>
+    
+    <div class="opts">
+      <button class="opt" data-ok>Three strings</button>
+      <button class="opt">Three floats</button>
+      <button class="opt">An integer, a float and a string</button>
+      <button class="opt">An error</button>
+    </div>
+    <div class="expl"><b>Three strings.</b> One string in the list is enough: String is the highest type, so 10 and 2.5 become text too.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x14r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x14g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="144" y="12" width="37" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="162.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">10</text><line x1="184" y1="32.0" x2="204" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x14)"/><rect x="206" y="12" width="45" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="228.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2.5</text><line x1="254" y1="32.0" x2="274" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x14)"/><rect x="278" y="12" width="45" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="300.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"7"</text><line x1="326" y1="32.0" x2="346" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x14)"/><rect x="348" y="12" width="148" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="422" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">['10' '2.5' '7']</text></svg><div class="cap">One string turns the whole array into text.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">Four integers and one string. How does NumPy choose the one type?</div>
+    <pre class="py" data-file="x.py" data-nocopy>np.array([1, "two", 3, 4, 5])</pre>
+    <div class="opts">
+      <button class="opt">The type of the first element</button>
+      <button class="opt">The type that appears most often</button>
+      <button class="opt">The type of the last element</button>
+      <button class="opt" data-ok>The type that can hold every value</button>
+    </div>
+    <div class="expl"><b>The type that can hold every value.</b> "two" cannot become a number, but 1, 3, 4 and 5 can become text: <code>['1' 'two' '3' '4' '5']</code>. Not the first, not the majority.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x15r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x15g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="187" y="12" width="53" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="213.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">True</text><line x1="243" y1="32.0" x2="263" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x15)"/><rect x="266" y="12" width="29" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="280.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><line x1="298" y1="32.0" x2="318" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x15)"/><rect x="321" y="12" width="45" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="343.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1.0</text><line x1="369" y1="32.0" x2="389" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x15)"/><rect x="392" y="12" width="61" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="422.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">'1.0'</text></svg><div class="cap">A value can move right and lose nothing. Text cannot move left.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="dtype" data-tag="NumPy">
+  <h2><code>dtype</code>: the data type of an array</h2>
+  <ul class="b"><li><code>dtype</code> = <b>d</b>ata <b>type</b>: the one type that every element has.</li></ul>
+  <pre class="py" data-file="one_type_only.py">a = np.array([1, "Akash", 3.5])
+print(a)
+print(a.dtype)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">['1' 'Akash' '3.5']
+&lt;U32</div>
+    <ul class="b">
+      <li>One string in the list, so everything became text.</li>
+      <li>But what is <code>&lt;U32</code>?</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 136" xmlns="http://www.w3.org/2000/svg"><rect x="75" y="10" width="90" height="56" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="120" y="49" text-anchor="middle" font-size="30" font-weight="700" font-family="Menlo,monospace" fill="#0f172a">&lt;</text><text x="120" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">byte order</text><text x="120" y="110" text-anchor="middle" font-size="12" fill="#475569">how the bytes are stored;</text><text x="120" y="126" text-anchor="middle" font-size="12" fill="#475569">ignore it for now</text><rect x="275" y="10" width="90" height="56" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="320" y="49" text-anchor="middle" font-size="30" font-weight="700" font-family="Menlo,monospace" fill="#0f172a">U</text><text x="320" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Unicode</text><text x="320" y="110" text-anchor="middle" font-size="12" fill="#475569">the elements are text</text><rect x="475" y="10" width="90" height="56" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="520" y="49" text-anchor="middle" font-size="30" font-weight="700" font-family="Menlo,monospace" fill="#0f172a">32</text><text x="520" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">length</text><text x="520" y="110" text-anchor="middle" font-size="12" fill="#475569">up to 32 characters</text><text x="520" y="126" text-anchor="middle" font-size="12" fill="#475569">in each element</text></svg><div class="cap">Read &lt;U32 as: text, up to 32 characters each.</div></div>
+  <table class="tbl" data-cells>
+    <tr><th>dtype</th><th>What the array holds</th></tr>
+    <tr><td><code>int64</code></td><td>whole numbers, 64 bits each</td></tr>
+    <tr><td><code>float64</code></td><td>decimal numbers, 64 bits each</td></tr>
+    <tr><td><code>bool</code></td><td>True or False</td></tr>
+    <tr><td><code>&lt;U5</code></td><td>text, up to 5 characters each</td></tr>
+  </table>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What is the dtype of <code>np.array(["abc", "de"])</code>?</div>
+    
+    <div class="opts">
+      <button class="opt"><code>&lt;U5</code></button>
+      <button class="opt"><code>&lt;U32</code></button>
+      <button class="opt" data-ok><code>&lt;U3</code></button>
+      <button class="opt"><code>&lt;U2</code></button>
+    </div>
+    <div class="expl"><b><code>&lt;U3</code>.</b> The longest string, "abc", has 3 characters. NumPy keeps room for the longest one, not the total.
+</div>
+  </div>
+</section>
+
+<section class="step" data-nav="Why 32?" data-tag="NumPy">
+  <h2>Why 32, when "3.5" has only 3 characters?</h2>
+  <div class="ask"><span class="ic">✋</span><div><code>np.array([1, "Akash", 3.5])</code> has dtype <code>&lt;U32</code>. The longest text is "Akash": 5 characters. Why 32?</div></div>
+  <div class="vote">
+    <div class="vopt">It adds up all the characters in the array</div>
+    <div class="vopt" data-win>It keeps room for the longest float there could be</div>
+    <div class="vopt">Every text array gets 32</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>NumPy does not measure <code>3.5</code>. It asks: how long can <b>any</b> float be, written as text?</li>
+      <li>A float can be long: <code>-1.7976931348623157e+308</code> is 24 characters. NumPy keeps 32 to be safe.</li>
+    </ul>
+    
+  </div>
+  <table class="tbl">
+    <tr><th>You write</th><th>dtype</th><th>Why</th></tr>
+    <tr><td><code>np.array(["Akash", "Ria"])</code></td><td><code>&lt;U5</code></td><td>only text: the longest string, 5</td></tr>
+    <tr><td><code>np.array([1, "Akash"])</code></td><td><code>&lt;U21</code></td><td>room for any integer: up to 20 digits and a sign</td></tr>
+    <tr><td><code>np.array([3.5, "Akash"])</code></td><td><code>&lt;U32</code></td><td>room for any float</td></tr>
+  </table>
+  <div class="take" data-brk>The number after U is the room kept for each element, not the length of your data.</div>
+</section>
+
+<section class="step" data-nav="Shape, ndim, size" data-tag="Shape">
+  <h2>Three questions to ask any array</h2>
+  <div class="ask"><span class="ic">✋</span><div>votes holds 10 numbers in one row. What does <code>votes.shape</code> print?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py" data-wide>votes = np.array([775, 787, 918, 88, 166,
+                  286, 2556, 324, 504, 402])
+
+print("Votes array shape:", votes.shape)</pre>
+  <div class="vote">
+    <div class="vopt" data-win>(10,)</div>
+    <div class="vopt">(10, 1)</div>
+    <div class="vopt">(1, 10)</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">Votes array shape: (10,)</div>
+    <ul class="b">
+      <li><code>.shape</code>: how many along each direction.</li>
+      <li><code>(10,)</code>: one direction, 10 elements. The comma marks a tuple with one number.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>One more line. What does <code>votes.ndim</code> print?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py" data-wide>print("Votes array dimensions:", votes.ndim)</pre>
+  <div class="vote">
+    <div class="vopt">10</div>
+    <div class="vopt" data-win>1</div>
+    <div class="vopt">2</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">Votes array dimensions: 1</div>
+    <ul class="b">
+      <li><code>.ndim</code>: how many dimensions.</li>
+      <li>One row, one direction: 1. A 1D array is also called a vector.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>One more line. What does <code>votes.size</code> print?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py" data-wide>print("Votes array size:", votes.size)</pre>
+  <div class="vote">
+    <div class="vopt">1</div>
+    <div class="vopt">(10,)</div>
+    <div class="vopt" data-win>10</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">Votes array size: 10</div>
+    <ul class="b">
+      <li><code>.size</code>: how many elements in total.</li>
+    </ul>
+    
+  </div>
+</section>
+
+<section class="step" data-nav="A second array" data-tag="Shape">
+  <h2>The same three questions, on a second array</h2>
+  <div class="ask"><span class="ic">✋</span><div>costs: the average cost for two. Messy on purpose: 10 strings, each 7 characters long. What do these print?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py" data-wide># Note: intentionally messy data
+costs = np.array(["'800.0'", "'800.0'", "'800.0'", "'300.0'",
+                  "'600.0'", "'600.0'", "'600.0'", "'700.0'",
+                  "'550.0'", "'500.0'"])
+
+print("Costs array shape:", costs.shape)
+print("Costs array dimensions:", costs.ndim)
+print("Costs array size:", costs.size)</pre>
+  <div class="vote">
+    <div class="vopt">(10, 7), then 2, then 70</div>
+    <div class="vopt" data-win>(10,), then 1, then 10</div>
+    <div class="vopt">(10,), then 1, then 70</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">Costs array shape: (10,)
+Costs array dimensions: 1
+Costs array size: 10</div>
+    <ul class="b">
+      <li>Same as votes: 10 elements in one row.</li>
+      <li>One string is one element. Its 7 characters are not a dimension.</li>
+      <li>Text, with extra quotes inside. We clean it later today.</li>
+    </ul>
+    
+  </div>
+</section>
+
+<section class="step" data-nav="Shape or size?" data-tag="Shape">
+  <h2>Shape and size are not the same</h2>
+  <div class="ask"><span class="ic">✋</span><div>So far: shape (10,), size 10. The same thing? Try two rows inside one array.</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py">m = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+print(m.shape)
+print(m.size)
+print(m.ndim)</pre>
+  <div class="vote">
+    <div class="vopt" data-win>(2, 3), then 6, then 2</div>
+    <div class="vopt">(2, 3), then (2, 3), then 2</div>
+    <div class="vopt">6, then 6, then 1</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">(2, 3)
+6
+2</div>
+    <ul class="b">
+      <li><code>shape</code>: 2 rows, 3 columns.</li>
+      <li><code>size</code>: multiply them. 2 × 3 = 6 elements.</li>
+      <li><code>ndim</code>: how many numbers the shape has. 2.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 152" xmlns="http://www.w3.org/2000/svg"><text x="196" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">3 columns</text><line x1="110" y1="38" x2="282" y2="38" stroke="#6366f1" stroke-width="2"/><text x="92" y="92" text-anchor="end" font-size="13" font-weight="700" fill="#b45309">2 rows</text><line x1="100" y1="48" x2="100" y2="126" stroke="#f59e0b" stroke-width="2"/><rect x="110" y="48" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="138" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="168" y="48" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="196" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="226" y="48" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="254" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="110" y="88" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="138" y="111.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="168" y="88" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="196" y="111.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="226" y="88" width="56" height="38" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="254" y="111.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="320" y="28" width="160" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="400" y="48.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">shape = (2, 3)</text><text x="490" y="49" text-anchor="start" font-size="12" fill="#475569">rows, columns</text><rect x="320" y="68" width="160" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="400" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">size = 2 × 3 = 6</text><text x="490" y="89" text-anchor="start" font-size="12" fill="#475569">every element, counted</text><rect x="320" y="108" width="160" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="400" y="128.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">ndim = 2</text><text x="490" y="129" text-anchor="start" font-size="12" fill="#475569">numbers in the shape</text></svg><div class="cap">shape describes the layout. size counts the elements.</div></div>
+  <div class="anat" data-brk><div class="a"><code>.shape</code><div class="m">how many along each direction: (rows, columns)</div></div><div class="a"><code>.ndim</code><div class="m">how many dimensions</div></div><div class="a"><code>.size</code><div class="m">how many elements in total</div></div></div>
+</section>
+
+<section class="step" data-nav="Read the shape" data-tag="Shape">
+  <h2>Quick check: read the shape</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What does <code>a.shape</code> print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>a = np.array([[1, 2, 3, 4],
+              [5, 6, 7, 8],
+              [9, 10, 11, 12]])</pre>
+    <div class="opts">
+      <button class="opt">(4, 3)</button>
+      <button class="opt">(12,)</button>
+      <button class="opt">(3, 4, 1)</button>
+      <button class="opt" data-ok>(3, 4)</button>
+    </div>
+    <div class="expl"><b>(3, 4).</b> Rows first: 3 inner lists, so 3 rows. Each has 4 numbers, so 4 columns. Size is 3 × 4 = 12.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x16r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x16g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="114" y="12" width="63" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="145.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">3 rows</text><line x1="180" y1="32.0" x2="200" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x16)"/><rect x="204" y="12" width="84" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="246" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">4 columns</text><line x1="290" y1="32.0" x2="310" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x16)"/><rect x="314" y="12" width="116" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="372" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">shape (3, 4)</text><line x1="432" y1="32.0" x2="452" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x16)"/><rect x="456" y="12" width="70" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="491" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">size 12</text></svg><div class="cap">Rows, then columns.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">Three levels of brackets. What does <code>b.shape</code> print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>b = np.array([[[1, 2],
+               [3, 4],
+               [5, 6]],
+              [[7, 8],
+               [9, 10],
+               [11, 12]]])</pre>
+    <div class="opts">
+      <button class="opt" data-ok>(2, 3, 2)</button>
+      <button class="opt">(3, 2, 2)</button>
+      <button class="opt">(2, 6)</button>
+      <button class="opt">(12,)</button>
+    </div>
+    <div class="expl"><b>(2, 3, 2).</b> Read from the outside in: 2 blocks, each block has 3 rows, each row has 2 numbers. Size is 2 × 3 × 2 = 12, and ndim is 3.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x17r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x17g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="48" y="12" width="77" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="86.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">2 blocks</text><line x1="128" y1="32.0" x2="136" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x17)"/><rect x="140" y="12" width="118" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="199" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">3 rows in each</text><line x1="260" y1="32.0" x2="268" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x17)"/><rect x="272" y="12" width="166" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="355" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">2 numbers in each row</text><line x1="440" y1="32.0" x2="448" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x17)"/><rect x="452" y="12" width="140" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="522" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">shape (2, 3, 2)</text></svg><div class="cap">One number in the shape for each level of brackets.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="The bracket trick" data-tag="Shape">
+  <h2>A shortcut: count the opening brackets</h2>
+  <div class="diag"><svg viewBox="0 0 640 166" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="44" width="50" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="65" y="63.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="92" y="44" width="50" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="117" y="63.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="144" y="44" width="50" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="169" y="63.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="118" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">1D: [ ... ]</text><text x="118" y="96" text-anchor="middle" font-size="12" fill="#64748b">a row of values</text><rect x="270" y="44" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="63.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="332" y="44" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="362" y="63.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="270" y="76" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="95.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="332" y="76" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="362" y="95.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="270" y="108" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="332" y="108" width="60" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="362" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.0</text><text x="332" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">2D: [[ ... ]]</text><text x="332" y="156" text-anchor="middle" font-size="12" fill="#64748b">rows and columns</text><rect x="470" y="44" width="110" height="64" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><rect x="482" y="56" width="110" height="64" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><rect x="494" y="68" width="110" height="64" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="540" y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">3D: [[[ ... ]]]</text><text x="540" y="156" text-anchor="middle" font-size="12" fill="#64748b">tables stacked</text></svg></div>
+  <div class="chips"><div class="chip"><div class="q">[775 787 918]</div><div class="a">1D</div></div><div class="chip"><div class="q">[[775 800] [787 800]]</div><div class="a">2D</div></div><div class="chip"><div class="q">[[[1 2] [3 4]] [[5 6] [7 8]]]</div><div class="a">3D</div></div></div>
+  <div class="take">Count the square brackets at the start: <code>[</code> is 1D, <code>[[</code> is 2D, <code>[[[</code> is 3D.</div>
+</section>
+
+<section class="step" data-nav="Transpose" data-tag="Shape">
+  <h2>Transpose: rows become columns</h2>
+  <div class="ask"><span class="ic">✋</span><div>m has 2 rows and 3 columns. What is the shape of <code>m.T</code>?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py">m = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+print(m.shape)
+print(m.T)
+print(m.T.shape)</pre>
+  <div class="vote">
+    <div class="vopt">(2, 3)</div>
+    <div class="vopt" data-win>(3, 2)</div>
+    <div class="vopt">(6,)</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">(2, 3)
+[[1 4]
+ [2 5]
+ [3 6]]
+(3, 2)</div>
+    <ul class="b">
+      <li><code>.T</code> is transpose: every row becomes a column.</li>
+      <li>No value changes. Only the layout.</li>
+      <li>Excel has it too: Paste Special, Transpose.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 144" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x18" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x18r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x18g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="168" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">m: shape (2, 3)</text><rect x="90" y="34" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="115" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="142" y="34" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="167" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="194" y="34" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="219" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="90" y="68" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="115" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="142" y="68" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="167" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="194" y="68" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="219" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><line x1="270" y1="68" x2="368" y2="68" stroke="#64748b" stroke-width="2" marker-end="url(#k375x18)"/><text x="319" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">.T</text><text x="452" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">m.T: shape (3, 2)</text><rect x="400" y="34" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="425" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="452" y="34" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="477" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="400" y="68" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="425" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="452" y="68" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="477" y="88.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="400" y="102" width="50" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="425" y="122.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="452" y="102" width="50" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="477" y="122.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text></svg><div class="cap">The first row becomes the first column. The second row becomes the second column.</div></div>
+  <div class="take">Transpose swaps rows and columns.</div>
+</section>
+
+<section class="step" data-nav="Why transpose?" data-tag="Shape">
+  <h2>Why transpose? One row per restaurant</h2>
+  <div class="ask"><span class="ic">🎤</span><div>We stack votes and costs into one array. Where is the data of restaurant 0?</div></div>
+  <div class="diag"><svg viewBox="0 0 640 138" xmlns="http://www.w3.org/2000/svg"><text x="320" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Stacked: shape (2, 3)</text><text x="222" y="62" text-anchor="end" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="222" y="96" text-anchor="end" font-size="12" font-weight="700" fill="#4f46e5">costs</text><rect x="230" y="40" width="58" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="259" y="60.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="290" y="40" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="319" y="60.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="350" y="40" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="379" y="60.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="230" y="74" width="58" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="259" y="94.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="290" y="74" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="319" y="94.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="350" y="74" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="379" y="94.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text><text x="320" y="128" text-anchor="middle" font-size="12" fill="#047857">restaurant 0 is split across two rows</text></svg></div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 152" xmlns="http://www.w3.org/2000/svg"><text x="340" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">After .T: shape (3, 2)</text><text x="309" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="369" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">costs</text><text x="272" y="68" text-anchor="end" font-size="12" font-weight="700" fill="#047857">restaurant 0</text><text x="272" y="102" text-anchor="end" font-size="12" fill="#64748b">restaurant 1</text><text x="272" y="136" text-anchor="end" font-size="12" fill="#64748b">restaurant 2</text><rect x="280" y="46" width="58" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="309" y="66.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="340" y="46" width="58" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="369" y="66.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="280" y="80" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="309" y="100.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="340" y="80" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="369" y="100.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text><rect x="280" y="114" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="309" y="134.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="340" y="114" width="58" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="369" y="134.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text></svg><div class="cap">One restaurant, one row: its votes and its cost sit together.</div></div>
+  <ul class="b"><li>After <code>.T</code>: one row per restaurant. Related data stays together.</li><li>Data tables are kept this way: one row per record, one column per attribute.</li></ul>
+  <ul class="b" data-brk><li>Where else is transpose used?</li><li><b>Maths:</b> it makes two matrices fit for multiplication.</li><li><b>Images:</b> a photo is a grid of numbers. Transpose flips it along the diagonal.</li><li><b>AI:</b> the attention formula inside every LLM has a transpose in it.</li></ul>
+</section>
+
+<section class="step" data-nav="A 2D array" data-tag="Shape">
+  <h2>Two columns: a 2D array</h2>
+  <div class="ask"><span class="ic">✋</span><div>5 restaurants, 2 facts about each. What will the shape be?</div></div>
+  <pre class="py" data-file="shape_and_dimensions.py" data-hl="12-15" data-wide>votes = np.array([775, 787, 918, 88, 166,
+                  286, 2556, 324, 504, 402])
+costs = np.array(["'800.0'", "'800.0'", "'800.0'", "'300.0'",
+                  "'600.0'", "'600.0'", "'600.0'", "'700.0'",
+                  "'550.0'", "'500.0'"])
+
+# Take first 5 elements of votes and costs
+subset_votes = votes[:5]
+subset_costs = costs[:5]
+
+# A 2D array: 5 rows, 2 columns. Each row: [votes, cost]
+two_d_data = np.array([
+    subset_votes,
+    subset_costs
+]).T  # transpose: one row per restaurant
+
+print("2D Array:\n", two_d_data)
+print("Shape:", two_d_data.shape)
+print("Dimensions:", two_d_data.ndim)
+print("Size:", two_d_data.size)</pre>
+  <div class="vote">
+    <div class="vopt">(2, 5)</div>
+    <div class="vopt" data-win>(5, 2)</div>
+    <div class="vopt">(10,)</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">2D Array:
+ [['775' "'800.0'"]
+ ['787' "'800.0'"]
+ ['918' "'800.0'"]
+ ['88' "'300.0'"]
+ ['166' "'600.0'"]]
+Shape: (5, 2)
+Dimensions: 2
+Size: 10</div>
+    <ul class="b">
+      <li>5 rows and 2 columns: <code>(5, 2)</code>. Each row is one restaurant.</li>
+      <li>Without <code>.T</code>: shape (2, 5). One row of votes, one of costs.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 216" xmlns="http://www.w3.org/2000/svg"><text x="295.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 0</text><text x="295.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">votes</text><text x="405.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 1</text><text x="405.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">costs</text><text x="230.0" y="62" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 0</text><rect x="240" y="40" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="350" y="40" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="96" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 1</text><rect x="240" y="74" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="350" y="74" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="130" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 2</text><rect x="240" y="108" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="350" y="108" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="164" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 3</text><rect x="240" y="142" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="350" y="142" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'300.0'</text><text x="230.0" y="198" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 4</text><rect x="240" y="176" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="350" y="176" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'600.0'</text></svg><div class="cap">Rows are restaurants. Columns are attributes.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Why the quotes?" data-tag="Shape">
+  <h2>Look again: why did 775 get quotes?</h2>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">votes held numbers: 775, 787. In the 2D array they print as <code>'775'</code>, in quotes. Why?</div>
+    <pre class="py" data-file="x.py" data-nocopy>print(votes[0])
+# 775
+print(two_d_data[0])
+# ['775' "'800.0'"]</pre>
+    <div class="opts">
+      <button class="opt">A bug in NumPy</button>
+      <button class="opt">The transpose changed them</button>
+      <button class="opt">print adds quotes to every number</button>
+      <button class="opt" data-ok>An array holds one type, and costs are strings, so the votes became strings too</button>
+    </div>
+    <div class="expl"><b>One type only.</b> String is higher than Integer, so NumPy quietly turned every vote into text. No warning. This is why we check types.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x19" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x19r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x19g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="96" y="12" width="132" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="162" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775 (a number)</text><line x1="231" y1="32.0" x2="251" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x19)"/><rect x="254" y="12" width="148" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="328" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">+ '800.0' (text)</text><line x1="405" y1="32.0" x2="425" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x19)"/><rect x="428" y="12" width="116" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="486" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">'775' (text)</text></svg><div class="cap">String > Float > Integer > Boolean.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Text is not a number" data-tag="Types">
+  <h2>Why types matter: text does not add up</h2>
+  <div class="ask"><span class="ic">✋</span><div>What does this print?</div></div>
+  <pre class="py" data-file="type_conversion.py">print("500" + "4")
+print(500 + 4)</pre>
+  <div class="vote">
+    <div class="vopt">504, then 504</div>
+    <div class="vopt" data-win>5004, then 504</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">5004
+504</div>
+    <ul class="b">
+      <li>Text is <b>joined</b>. Numbers are <b>added</b>.</li>
+      <li>The real Zomato costs look like <code>"1,200"</code>: text. No average until converted.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 420 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="176" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="104" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"500" + "4"</text><text x="206" y="30" text-anchor="start" font-size="13" fill="#b91c1c">"5004": joined</text><rect x="16" y="50" width="176" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="104" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">500 + 4</text><text x="206" y="72" text-anchor="start" font-size="13" fill="#047857">504: added</text></svg><div class="cap">Convert before you calculate.</div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="astype()" data-tag="Types">
+  <h2><code>astype()</code>: change the type</h2>
+  <pre class="py" data-file="type_conversion.py" data-wide>a = np.array(['1.2', '2.5', '3.6', '4.8'])
+print("Type of a: ", type(a))
+print("Type of elements of a: ", a.dtype)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">Type of a:  &lt;class 'numpy.ndarray'&gt;
+Type of elements of a:  &lt;U3</div>
+    <ul class="b">
+      <li><code>type(a)</code>: it is a NumPy array.</li>
+      <li><code>a.dtype</code> is <code>&lt;U3</code>: text, up to 3 characters. They look like numbers, but they are text.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>Now convert. What does a.dtype say after this?</div></div>
+  <pre class="py" data-file="type_conversion.py" data-wide>a = a.astype(float)
+print(a.dtype)
+print(a)</pre>
+  <div class="vote">
+    <div class="vopt">&lt;U3: nothing changes</div>
+    <div class="vopt" data-win>float64</div>
+    <div class="vopt">int64</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">float64
+[1.2 2.5 3.6 4.8]</div>
+    <ul class="b">
+      <li><code>astype(float)</code> made a new array of real numbers. Now maths works.</li>
+      <li>Try it: <code>np.array(["10.5", "20.3"]).astype(float)</code> gives <code>[10.5 20.3]</code>.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x20" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x20r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x20g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="104" y="12" width="116" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="162" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">'1.2' (text)</text><line x1="223" y1="32.0" x2="243" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x20)"/><rect x="246" y="12" width="132" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="312" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">.astype(float)</text><line x1="381" y1="32.0" x2="401" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x20)"/><rect x="404" y="12" width="132" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="470" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1.2 (a number)</text></svg></div>
+  </div>
+</section>
+
+<section class="step" data-nav="When it fails" data-tag="Types">
+  <h2>When conversion fails</h2>
+  <div class="ask"><span class="ic">✋</span><div>These are words, not numbers. What happens?</div></div>
+  <pre class="py" data-file="type_conversion.py">a = np.array(["abc", "xyz"])
+a.astype(float)</pre>
+  <div class="vote">
+    <div class="vopt">[0. 0.]</div>
+    <div class="vopt">[nan nan]</div>
+    <div class="vopt" data-win>ValueError</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">ValueError: could not convert string to float: np.str_('abc')</span></div>
+    <ul class="b">
+      <li>Only text that looks like a number can become a number.</li>
+      <li>NumPy names the value it could not convert. The error points at the bad data.</li>
+    </ul>
+    
+  </div>
+</section>
+
+<section class="step" data-nav="Clean our costs" data-tag="Types">
+  <h2>Now our own data: clean the costs</h2>
+  <div class="ask"><span class="ic">✋</span><div>Each cost looks like <code>"'800.0'"</code>. Will this work?</div></div>
+  <pre class="py" data-file="type_conversion.py" data-hl="6" data-wide># Note: intentionally messy data
+costs = np.array(["'800.0'", "'800.0'", "'800.0'", "'300.0'",
+                  "'600.0'", "'600.0'", "'600.0'", "'700.0'",
+                  "'550.0'", "'500.0'"])
+
+costs.astype(float)</pre>
+  <div class="vote">
+    <div class="vopt">Yes: 800.0 is a number</div>
+    <div class="vopt" data-win>No: ValueError</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">ValueError: could not convert string to float: np.str_("'800.0'")</span></div>
+    <ul class="b">
+      <li>The extra quotes are part of the text. <code>'800.0'</code> with quotes is not a number.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>So clean first, then convert. What is the average cost for two?</div></div>
+  <pre class="py" data-file="type_conversion.py" data-wide>clean_costs = np.char.strip(costs, "'").astype(float)
+print(clean_costs)
+print("Average cost for two:", clean_costs.mean())</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[800. 800. 800. 300. 600. 600. 600. 700. 550. 500.]
+Average cost for two: 625.0</div>
+    <ul class="b">
+      <li><code>np.char.strip(costs, "'")</code> removes the quote at both ends of every element.</li>
+      <li>Then <code>astype(float)</code> works, and so does <code>.mean()</code>.</li>
+    </ul>
+    <div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x21" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x21r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x21g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="24" y="12" width="93" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="70.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"'800.0'"</text><line x1="120" y1="32.0" x2="140" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x21)"/><rect x="144" y="12" width="132" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="210" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">strip the quotes</text><line x1="278" y1="32.0" x2="298" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x21)"/><rect x="302" y="12" width="77" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="340.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"800.0"</text><line x1="382" y1="32.0" x2="402" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x21)"/><rect x="404" y="12" width="124" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="466" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">astype(float)</text><line x1="532" y1="32.0" x2="552" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x21)"/><rect x="554" y="12" width="61" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="584.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text></svg><div class="cap">Clean, convert, calculate.</div></div>
+  </div>
+  <div class="take">The manager asked for the average cost for two. Our answer: ₹625.</div>
+</section>
+
+<section class="step" data-nav="Quiz: astype" data-tag="Types">
+  <h2>Quick check: type conversion</h2>
+  <div class="quiz" data-level="s" data-wide>
+    <div class="qt">Which of these converts a float array to integers?</div>
+    <pre class="py" data-file="x.py" data-nocopy>arr = np.array([1.7, 2.8, 3.9])</pre>
+    <div class="opts">
+      <button class="opt" data-ok><code>arr.astype(int)</code></button>
+      <button class="opt"><code>arr.toInt()</code></button>
+      <button class="opt"><code>int(arr)</code></button>
+      <button class="opt"><code>astype(arr, int)</code></button>
+    </div>
+    <div class="expl"><b>arr.astype(int).</b> astype is a method of the array, so it comes after the dot. <code>int(arr)</code> works on one value, not on a whole array.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k375x22" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k375x22r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k375x22g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="124" y="12" width="45" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="146.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">arr</text><line x1="172" y1="32.0" x2="192" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x22)"/><rect x="194" y="12" width="116" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="252" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">.astype(int)</text><line x1="314" y1="32.0" x2="334" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k375x22)"/><rect x="336" y="12" width="180" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="426" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">a new array of integers</text></svg></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">And what does <code>arr.astype(int)</code> give for that array?</div>
+    <pre class="py" data-file="x.py" data-nocopy>arr = np.array([1.7, 2.8, 3.9])
+arr.astype(int)</pre>
+    <div class="opts">
+      <button class="opt"><code>[2 3 4]</code></button>
+      <button class="opt"><code>[1.7 2.8 3.9]</code></button>
+      <button class="opt" data-ok><code>[1 2 3]</code></button>
+      <button class="opt">An error: the decimals would be lost</button>
+    </div>
+    <div class="expl"><b>[1 2 3].</b> The decimal part is cut off, not rounded. 3.9 becomes 3. For money, that matters.
+<div class="diag"><svg viewBox="0 0 420 136" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="176" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="104" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1.7</text><text x="206" y="30" text-anchor="start" font-size="13" fill="#334155">1</text><rect x="16" y="50" width="176" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="104" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2.8</text><text x="206" y="72" text-anchor="start" font-size="13" fill="#334155">2</text><rect x="16" y="92" width="176" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="104" y="113.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3.9</text><text x="206" y="114" text-anchor="start" font-size="13" fill="#334155">3: cut, not rounded</text></svg><div class="cap">astype(int) cuts.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Indexing" data-tag="Indexing">
+  <h2>Indexing: pick one element</h2>
+  <div class="diag"><svg viewBox="0 0 672 104" xmlns="http://www.w3.org/2000/svg"><text x="336.0" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">votes</text><rect x="96" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="122" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="122" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><text x="122" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-10</text><rect x="152" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="178" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="178" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><text x="178" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-9</text><rect x="208" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="234" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="234" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><text x="234" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-8</text><rect x="264" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="290" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="290" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><text x="290" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-7</text><rect x="320" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="346" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="346" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><text x="346" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-6</text><rect x="376" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="402" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="402" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><text x="402" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-5</text><rect x="432" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="458" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><text x="458" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><text x="458" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-4</text><rect x="488" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="514" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="514" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><text x="514" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-3</text><rect x="544" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="570" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="570" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><text x="570" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-2</text><rect x="600" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="626" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="626" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="626" y="92" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">-1</text><text x="88" y="34" text-anchor="end" font-size="11" fill="#4f46e5">index</text><text x="88" y="92" text-anchor="end" font-size="11" fill="#b91c1c">from the end</text></svg><div class="cap">Count from the start with 0, 1, 2. Count from the end with -1, -2.</div></div>
+  <div class="chips"><div class="chip"><div class="q">votes[0]</div><div class="a">775</div></div><div class="chip"><div class="q">votes[-1]</div><div class="a">402</div></div><div class="chip"><div class="q">votes[-2]</div><div class="a">504</div></div></div>
+  <ul class="b" data-brk><li>Why -1 and not -0? Because -0 is 0: the first element.</li><li>Real use: the most recent transaction is simply <code>a[-1]</code>.</li></ul>
+</section>
+
+<section class="step" data-nav="Many positions" data-tag="Indexing">
+  <h2>Pick many positions at once</h2>
+  <div class="ask"><span class="ic">✋</span><div>A list of positions inside the brackets. What comes back?</div></div>
+  <pre class="py" data-file="indexing_and_slicing.py" data-hl="4" data-wide>votes = np.array([775, 787, 918, 88, 166,
+                  286, 2556, 324, 504, 402])
+
+votes[[2, 3, 4, 1, 2, 2]]</pre>
+  <div class="vote">
+    <div class="vopt">An error: only one position is allowed</div>
+    <div class="vopt" data-win>[918,  88, 166, 787, 918, 918]</div>
+    <div class="vopt">[918, 88, 166, 787]: no repeats</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">array([918,  88, 166, 787, 918, 918])</div>
+    <ul class="b">
+      <li>NumPy returns the elements in the order you asked, repeats included.</li>
+      <li>A plain Python list cannot do this.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="76" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="76" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="132" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="132" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="188" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="188" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="244" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="300" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="356" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="412" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><text x="412" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="468" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="468" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="524" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="524" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="580" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="580" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">Positions 2, 3, 4, 1, 2, 2.</div></div>
+</section>
+
+<section class="step" data-nav="Slicing" data-tag="Indexing">
+  <h2>Slicing: take a part</h2>
+  <ul class="b"><li><code>array[start : end]</code> starts at <b>start</b> and stops one step <b>before end</b>.</li><li>Like a hotel: check in on the 1st, check out on the 4th. You stay nights 1, 2 and 3.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>What does a[1:4] give?</div></div>
+  <pre class="py" data-file="indexing_and_slicing.py" data-wide>a = np.array([100, 200, 300, 400, 500])
+print(a[1:4])</pre>
+  <div class="vote">
+    <div class="vopt">[100 200 300 400]</div>
+    <div class="vopt" data-win>[200 300 400]</div>
+    <div class="vopt">[200 300 400 500]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[200 300 400]</div>
+    <ul class="b">
+      <li>Positions 1, 2 and 3. Position 4 is left out.</li>
+      <li>To get elements up to position 2, write <code>0:3</code>: end plus one.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="180" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="206" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">100</text><text x="206" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="236" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="262" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">200</text><text x="262" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="292" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="318" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">300</text><text x="318" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="348" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="374" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">400</text><text x="374" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="404" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="430" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">500</text><text x="430" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><text x="172.0" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">a[1:4]: start at 1, stop before 4.</div></div>
+  <ul class="b" data-brk><li><b>Pagination</b> is slicing: page 1 is <code>a[0:10]</code>, page 2 is <code>a[10:20]</code>.</li><li><code>votes[:5]</code> gives the first five: <code>[775 787 918  88 166]</code>.</li></ul>
+</section>
+
+<section class="step" data-nav="2D: row, column" data-tag="Indexing">
+  <h2>2D indexing: row first, then column</h2>
+  <div class="diag"><svg viewBox="0 0 640 216" xmlns="http://www.w3.org/2000/svg"><text x="295.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 0</text><text x="295.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">votes</text><text x="405.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 1</text><text x="405.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">costs</text><text x="230.0" y="62" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 0</text><rect x="240" y="40" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="350" y="40" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="403" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="96" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 1</text><rect x="240" y="74" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="350" y="74" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="403" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="130" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 2</text><rect x="240" y="108" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="350" y="108" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="403" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="164" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 3</text><rect x="240" y="142" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="350" y="142" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'300.0'</text><text x="230.0" y="198" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 4</text><rect x="240" y="176" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="293" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="350" y="176" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'600.0'</text></svg><div class="cap">two_d_data[:3, :] is highlighted: rows 0 to 2, every column.</div></div>
+  <table class="tbl" data-cells>
+    <tr><th>You write</th><th>You get</th></tr>
+    <tr><td><code>two_d_data[1, 0]</code></td><td>row 1, column 0: <code>787</code></td></tr>
+    <tr><td><code>two_d_data[:3, :]</code></td><td>the first 3 rows, all columns</td></tr>
+    <tr><td><code>two_d_data[:, 0]</code></td><td>every row, column 0: all the votes <code>['775' '787' '918' '88' '166']</code></td></tr>
+    <tr><td><code>two_d_data[:, 1]</code></td><td>every row, column 1: all the costs</td></tr>
+    <tr><td><code>arr[0:2, 1:3]</code></td><td>rows 0 and 1, columns 1 and 2</td></tr>
+  </table>
+  <div class="take">The mantra: <b>Row, Column</b>. A colon alone means "all of them".</div>
+  <ul class="b" data-brk><li>Explore it yourself: <a href="https://aiml-v-izs.vercel.app/v/fd-k7q2x9m4/slicing?embed=1" target="_blank">NumPy slicing visualizer</a>.</li></ul>
+  <div class="ai"><b>🤖 AI moment</b> — make your own practice. Solve the three questions on paper first, then run them.<div class="pr">"Give me a small practice exercise on NumPy 2D array slicing. Include a sample array and 3 slicing questions with expected outputs."</div></div>
+</section>
+
+<section class="step" data-nav="One column" data-tag="Indexing">
+  <h2>One column: what shape comes back?</h2>
+  <div class="ask"><span class="ic">✋</span><div>3 rows, 2 columns. Take every row, column 0. What prints?</div></div>
+  <pre class="py" data-file="indexing_and_slicing.py" data-hl="5" data-wide>arr = np.array([[1, 2],
+                [3, 4],
+                [5, 6]])
+
+print(arr[:, 0])</pre>
+  <div class="vote">
+    <div class="vopt">[1 2]</div>
+    <div class="vopt" data-win>[1 3 5]</div>
+    <div class="vopt">[[1] [3] [5]]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[1 3 5]</div>
+    <ul class="b">
+      <li>Column 0 of every row: 1, 3 and 5.</li>
+      <li>Count the brackets: one <code>[</code>. So it is a <b>1D</b> array.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>One bracket, so one number in the shape. Which one?</div></div>
+  <pre class="py" data-file="indexing_and_slicing.py" data-wide>print(arr[:, 0].shape)</pre>
+  <div class="vote">
+    <div class="vopt">(3, 1)</div>
+    <div class="vopt">(1, 3)</div>
+    <div class="vopt" data-win>(3,)</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">(3,)</div>
+    <ul class="b">
+      <li>Three values in one row: <code>(3,)</code>.</li>
+      <li>You asked for column <b>number 0</b>. NumPy returns its values only. The column direction is gone.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>Now write a slice, <code>0:1</code>, where the number <code>0</code> was. What changes?</div></div>
+  <pre class="py" data-file="indexing_and_slicing.py" data-wide>print(arr[:, 0:1])
+print(arr[:, 0:1].shape)</pre>
+  <div class="vote">
+    <div class="vopt">Nothing: the same output</div>
+    <div class="vopt" data-win>Two brackets, shape (3, 1)</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[1]
+ [3]
+ [5]]
+(3, 1)</div>
+    <ul class="b">
+      <li>Count again: two brackets, <code>[[</code>. A <b>2D</b> array with 3 rows and 1 column.</li>
+      <li>A slice keeps the direction, even when it holds only one column.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg"><line x1="330" y1="8" x2="330" y2="184" stroke="#cbd5e1" stroke-width="1"/><text x="170" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">arr[:, 0]</text><text x="170" y="40" text-anchor="middle" font-size="12" fill="#475569">a number: that direction is dropped</text><rect x="92" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="117" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="144" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="169" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="196" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="221" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="170" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">shape (3,): 3 values in one row</text><text x="480" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">arr[:, 0:1]</text><text x="480" y="40" text-anchor="middle" font-size="12" fill="#475569">a slice: the direction stays</text><rect x="400" y="52" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="400" y="76" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="400" y="100" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="115.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="476" y="104" text-anchor="start" font-size="13" font-weight="700" fill="#b45309">shape (3, 1)</text><text x="476" y="124" text-anchor="start" font-size="12" fill="#475569">3 rows, 1 column</text></svg><div class="cap">A number drops the direction. A slice keeps it.</div></div>
+  <div class="take">A number drops a direction. A slice keeps it.</div>
+</section>
+
+<section class="step" data-nav="Quiz: shapes" data-tag="Indexing">
+  <h2>Quick check: what shape comes back?</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">An array has shape (m, n). What shape does <code>arr[:, 0]</code> return?</div>
+    
+    <div class="opts">
+      <button class="opt">(1, n)</button>
+      <button class="opt" data-ok>(m,)</button>
+      <button class="opt">(m, 1)</button>
+      <button class="opt">(n,)</button>
+    </div>
+    <div class="expl"><b>(m,).</b> Every row, one column: m values in a 1D array. On our data, <code>two_d_data[:, 0].shape</code> is <code>(5,)</code>. As on the last step: a number drops the direction. (m, 1) needs a slice, <code>arr[:, 0:1]</code>.
+<div class="diag"><svg viewBox="0 0 640 216" xmlns="http://www.w3.org/2000/svg"><text x="295.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 0</text><text x="295.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">votes</text><text x="405.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 1</text><text x="405.0" y="32" text-anchor="middle" font-size="11" fill="#64748b">costs</text><text x="230.0" y="62" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 0</text><rect x="240" y="40" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="350" y="40" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="59.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="96" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 1</text><rect x="240" y="74" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="350" y="74" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="93.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="130" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 2</text><rect x="240" y="108" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="350" y="108" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="127.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'800.0'</text><text x="230.0" y="164" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 3</text><rect x="240" y="142" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="350" y="142" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="161.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'300.0'</text><text x="230.0" y="198" text-anchor="end" font-size="12" font-weight="700" fill="#b91c1c">row 4</text><rect x="240" y="176" width="106" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="293" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="350" y="176" width="106" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="403" y="195.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">'600.0'</text></svg><div class="cap">One column of a (5, 2) array: 5 values, shape (5,).</div></div><div class="diag"><svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg"><line x1="330" y1="8" x2="330" y2="184" stroke="#cbd5e1" stroke-width="1"/><text x="170" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">two_d_data[:, 0]</text><text x="170" y="40" text-anchor="middle" font-size="12" fill="#475569">a number: that direction is dropped</text><rect x="40" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="65" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="92" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="117" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="144" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="169" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="196" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="221" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="248" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="273" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="170" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">shape (5,): 5 values in one row</text><text x="480" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">two_d_data[:, 0:1]</text><text x="480" y="40" text-anchor="middle" font-size="12" fill="#475569">a slice: the direction stays</text><rect x="400" y="52" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="400" y="76" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="400" y="100" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="115.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="400" y="124" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="139.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="400" y="148" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="163.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="476" y="104" text-anchor="start" font-size="13" font-weight="700" fill="#b45309">shape (5, 1)</text><text x="476" y="124" text-anchor="start" font-size="12" fill="#475569">5 rows, 1 column</text></svg><div class="cap">A number drops the direction. A slice keeps it.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">votes has 10 elements. What does <code>votes[8:20]</code> give?</div>
+    <pre class="py" data-file="x.py" data-nocopy>votes = np.array([
+    775, 787, 918, 88, 166,
+    286, 2556, 324, 504, 402])
+
+votes[8:20]</pre>
+    <div class="opts">
+      <button class="opt">An IndexError: there is no position 19</button>
+      <button class="opt" data-ok><code>[504 402]</code></button>
+      <button class="opt"><code>[]</code></button>
+      <button class="opt">Ten zeros</button>
+    </div>
+    <div class="expl"><b>The last two.</b> A slice never fails for going too far: it stops at the end. A single index, <code>votes[20]</code>, does raise IndexError.
+<div class="diag"><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="76" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="76" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="132" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="132" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="188" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="188" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="244" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="244" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="356" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="412" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><text x="412" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="468" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="468" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="524" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="524" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="580" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="580" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">votes[8:20]: from 8 to the end.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Recap">
+  <h2>Recap</h2>
+  <div class="ask"><span class="ic">✍️</span><div>Two minutes. Three points you would tell a friend who missed today. <span class="timer" data-sec="120"></span></div></div>
+  <button class="rv" data-reveal="next">Compare</button>
+  <div class="reveal">
+    
+    <ul class="b"><li><b>Machine learning</b> learns patterns from history. <b>EDA</b> comes first: understand and clean the data.</li><li><b>NumPy arrays</b> do maths on every element at once. Fast: values side by side, one type.</li><li><b>One type only.</b> One string turns the whole array into text.</li><li><code>.shape</code>, <code>.ndim</code>, <code>.size</code> describe an array. Count the opening brackets for the dimensions.</li><li><code>astype()</code> converts types. Clean the text first: our average cost for two is ₹625.</li><li><b>Indexing:</b> start at 0; <code>-1</code> is the last. A slice leaves out its end. In 2D: row, then column.</li></ul>
+  </div>
+  <div class="take">Next class: filtering the restaurants with conditions, and more NumPy on the same data.</div>
+</section>
+
+</div></main>
+<script src="../assets/lesson.js"></script>
+</body>
+</html>
