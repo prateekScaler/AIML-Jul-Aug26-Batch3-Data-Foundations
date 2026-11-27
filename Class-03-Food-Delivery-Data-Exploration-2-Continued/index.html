@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 3 · Food Delivery Data Exploration and Analysis 2 Continued</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+<style>
+.ask.biz,.take.biz{border-left-color:var(--amber)!important}
+.biz .who{color:var(--amber)}
+.take.biz::before,.take.blk::before{content:""!important}
+.take.blk{border-left-color:var(--indigo)!important}
+</style>
+</head>
+<body data-key="aiml3-df-c03" data-class="Class 3" data-title="Food Delivery Data Exploration and Analysis 2 Continued" data-course="Data Foundations · AIML Jul-Aug26 Batch 3" data-date="2026-11-25" data-tool-url="https://colab.research.google.com/" data-tool-label="Colab">
+
+<div class="cover" id="cover">
+  <h1><small>Class 3</small>Food Delivery Data Exploration and Analysis 2 Continued</h1>
+  <div class="by">Prateek Vijay</div>
+</div>
+
+<main class="main"><div class="wrap">
+
+<section class="step" data-nav="Recap 1" data-tag="Recap">
+  <h2>Last class: read the shape</h2>
+  <div class="quiz" data-level="s" data-wide>
+    <div class="qt">What is <code>a.shape</code>?</div>
+    <pre class="py" data-file="x.py" data-nocopy>a = np.array([[1, 2, 3],
+              [4, 5, 6]])</pre>
+    <div class="opts">
+      <button class="opt"><code>(3, 2)</code></button>
+      <button class="opt" data-ok><code>(2, 3)</code></button>
+      <button class="opt"><code>(6,)</code></button>
+      <button class="opt"><code>(2,)</code></button>
+    </div>
+    <div class="expl"><b>(2, 3).</b> Count from the outside in: the outer bracket holds 2 lists, so 2 rows. Each list holds 3 numbers, so 3 columns. Rows first.
+<div class="diag"><svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg"><text x="190.0" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">3 columns</text><line x1="110" y1="32" x2="270" y2="32" stroke="#6366f1" stroke-width="2"/><text x="88" y="86.0" text-anchor="end" font-size="13" font-weight="700" fill="#b45309">2 rows</text><line x1="98" y1="46" x2="98" y2="116" stroke="#f59e0b" stroke-width="2"/><rect x="110" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="164" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="190" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="218" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="110" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="164" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="190" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="218" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="372" y="34" width="150" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="447" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">shape = (2, 3)</text><text x="532" y="55" text-anchor="start" font-size="12" fill="#475569">rows, columns</text><rect x="372" y="76" width="150" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="447" y="96.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">size = 2 × 3 = 6</text><text x="532" y="97" text-anchor="start" font-size="12" fill="#475569">every element</text><rect x="372" y="118" width="150" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="447" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">ndim = 2</text><text x="532" y="139" text-anchor="start" font-size="12" fill="#475569">two directions</text></svg><div class="cap">Rows go down. Columns go across. The shape says rows first.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Recap 2" data-tag="Recap">
+  <h2>Last class: a slice or a number</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What is <code>arr[:, 0:1].shape</code>?</div>
+    <pre class="py" data-file="x.py" data-nocopy>arr = np.array([[1, 2],
+                [3, 4],
+                [5, 6]])</pre>
+    <div class="opts">
+      <button class="opt"><code>(3,)</code></button>
+      <button class="opt"><code>(1, 3)</code></button>
+      <button class="opt"><code>(2,)</code></button>
+      <button class="opt" data-ok><code>(3, 1)</code></button>
+    </div>
+    <div class="expl"><b>(3, 1).</b> <code>0:1</code> is a slice, and a slice keeps the direction: 3 rows, 1 column. With the number <code>0</code>, <code>arr[:, 0]</code>, the direction is dropped and the shape is <code>(3,)</code>.
+<div class="diag"><svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg"><line x1="330" y1="8" x2="330" y2="184" stroke="#cbd5e1" stroke-width="1"/><text x="170" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">arr[:, 0]</text><text x="170" y="40" text-anchor="middle" font-size="12" fill="#475569">a number: that direction is dropped</text><rect x="92" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="117" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="144" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="169" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="196" y="54" width="50" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="221" y="75.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="170" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">shape (3,): 3 values in one row</text><text x="480" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">arr[:, 0:1]</text><text x="480" y="40" text-anchor="middle" font-size="12" fill="#475569">a slice: the direction stays</text><rect x="400" y="52" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="400" y="76" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="91.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="400" y="100" width="60" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="430" y="115.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="476" y="104" text-anchor="start" font-size="13" font-weight="700" fill="#b45309">shape (3, 1)</text><text x="476" y="124" text-anchor="start" font-size="12" fill="#475569">3 rows, 1 column</text></svg><div class="cap">A number drops the direction. A slice keeps it.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Recap 3" data-tag="Recap">
+  <h2>Last class: text is not a number</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">Our costs are text with quote marks inside: <code>"'800.0'"</code>. What does <code>costs.astype(float)</code> do?</div>
+    
+    <div class="opts">
+      <button class="opt" data-ok>An error: the quote marks are not part of a number</button>
+      <button class="opt">Gives <code>[800. 800. 800. …]</code></button>
+      <button class="opt">Gives <code>[0. 0. 0. …]</code></button>
+      <button class="opt">Skips the values it cannot read</button>
+    </div>
+    <div class="expl"><b>An error.</b> <code>ValueError: could not convert string to float: np.str_("'800.0'")</code>. Clean first, then convert: <code>np.char.strip(costs, "'").astype(float)</code>. That gave the average cost for two, ₹625. Today we call the clean array <code>clean_costs</code>.
+<div class="diag"><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x23" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x23r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x23g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="48" y="12" width="93" height="40" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="94.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"'800.0'"</text><line x1="144" y1="32.0" x2="164" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x23)"/><rect x="168" y="12" width="97" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="216.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">strip the '</text><line x1="268" y1="32.0" x2="288" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x23)"/><rect x="290" y="12" width="77" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="328.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"800.0"</text><line x1="370" y1="32.0" x2="390" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x23)"/><rect x="394" y="12" width="111" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="449.5" y="36.5" text-anchor="middle" font-size="13" fill="#0f172a">astype(float)</text><line x1="508" y1="32.0" x2="528" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x23)"/><rect x="530" y="12" width="61" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="560.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800.0</text></svg><div class="cap">Clean, then convert.</div></div></div>
+  </div>
+  <ul class="b" data-brk><li>Clean costs gave the manager the first answer: ₹625 for two.</li></ul>
+</section>
+
+<section class="step" data-nav="Today's questions" data-tag="Today">
+  <h2>Today: the questions the business asks</h2>
+  <ul class="b"><li>We are the data team of a food delivery app. Same 10 restaurants: votes, and the cost for two.</li><li>Class 1 answered one question: the average cost for two is ₹625. Today the business asks more.</li></ul>
+  <table class="tbl" data-cells>
+    <tr><th>Who asks</th><th>The question</th><th>The tool today</th></tr>
+    <tr><td>The app team</td><td>Customer IDs, and filter buttons for cost and rating</td><td><code>np.arange</code>, slicing with a step</td></tr>
+    <tr><td>The manager</td><td>Are popular places more expensive?</td><td>a mask</td></tr>
+    <tr><td>Marketing</td><td>Which places are popular <b>and</b> affordable?</td><td>two conditions, <code>&amp;</code></td></tr>
+    <tr><td>The manager</td><td>One sheet and one summary: total votes, average cost</td><td><code>column_stack</code>, <code>sum</code>, <code>mean</code>, <code>axis</code></td></tr>
+    <tr><td>Operations</td><td>Can a restaurant promise a delivery time?</td><td><code>std</code></td></tr>
+    <tr><td>The product team</td><td>Which cards get a "Popular" badge?</td><td><code>np.where</code></td></tr>
+    <tr><td>The manager</td><td>Which places are most popular, and what do they cost?</td><td><code>np.argsort</code></td></tr>
+  </table>
+  <div class="ask"><span class="ic">🎤</span><div>Which of these could you answer already, with Class 1 and 2 tools only?</div></div>
+  <button class="rv" data-reveal="next">Show</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>None of them fully. Shapes, slices and astype got the data ready. Today we ask it questions.</li>
+    </ul>
+    
+  </div>
+  <div class="take">Every tool today answers one of these questions. At the end, we fill in the answers.</div>
+</section>
+
+<section class="step" data-nav="np.arange" data-tag="arange">
+  <h2><code>np.arange</code>: numbers in a row, made for you</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> the app launches in a new city with its first 1,000 customers. Each needs a customer ID: 1, 2, 3 … 1000.</div></div>
+  <div class="ask"><span class="ic">🎤</span><div>Would you type them?</div></div>
+  <div class="anat" data-brk><div class="a"><code>np.arange(start, end, step)</code><div class="m">makes the numbers from start, jumping by step, stopping before end</div></div><div class="a"><code>end</code><div class="m">is left out, as in a slice</div></div><div class="a"><code>step</code><div class="m">is 1 when you leave it out</div></div></div>
+  <div class="ask"><span class="ic">✋</span><div>What is the last number here?</div></div>
+  <pre class="py" data-file="arange.py">ids = np.arange(1, 1000)
+print(ids[-1])</pre>
+  <div class="vote">
+    <div class="vopt">1000</div>
+    <div class="vopt" data-win>999</div>
+    <div class="vopt">1001</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">999</div>
+    <ul class="b">
+      <li>The end is left out. The hotel again: you leave on the last day.</li>
+      <li>For IDs 1 to 1000, write <code>np.arange(1, 1001)</code>.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="arange.py" data-wide>ids = np.arange(1, 1001)
+print(ids[:5])
+print(ids[-3:])
+print(ids.size)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[1 2 3 4 5]
+[ 998  999 1000]
+1000</div>
+    <ul class="b">
+      <li>Order IDs, ticket numbers, roll numbers: one line, no typing.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> IDs and order numbers made in one line: none missing, none typed twice.</div>
+</section>
+
+<section class="step" data-nav="Step and decimals" data-tag="arange">
+  <h2>The third number: the step</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> a "cost for two" filter with one button for every ₹100: ₹100, ₹200 … ₹900.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Which line makes the nine button values?</div></div>
+  <div class="vote">
+    <div class="vopt"><code>np.arange(100, 900, 100)</code></div>
+    <div class="vopt" data-win><code>np.arange(100, 1000, 100)</code></div>
+    <div class="vopt"><code>np.arange(100, 900)</code></div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    <div class="out">[100 200 300 400 500 600 700 800 900]</div>
+    <ul class="b">
+      <li>The third number is the step: jump by 100.</li>
+      <li><code>np.arange(100, 900, 100)</code> stops at 800, because the end, 900, is left out.</li>
+      <li><code>np.arange(100, 901, 100)</code> works too.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>And a rating filter: 3.0, 3.5, 4.0, 4.5 stars. Can the step be a decimal?</div></div>
+  <pre class="py" data-file="arange.py">print(np.arange(3, 5, 0.5))</pre>
+  <div class="vote">
+    <div class="vopt" data-win>Yes</div>
+    <div class="vopt">No: an error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[3.  3.5 4.  4.5]</div>
+    <ul class="b">
+      <li><code>np.arange</code> accepts decimals.</li>
+      <li>Python's own <code>range(3, 5, 0.5)</code> does not: it gives a TypeError.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> change one number, the step, and every filter button on the app changes with it.</div>
+</section>
+
+<section class="step" data-nav="Step slicing" data-tag="Slicing">
+  <h2>A slice can take a step too</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The quality team:</b> we cannot visit all 10 restaurants this week. We check every second one on the list.</div></div>
+  <ul class="b"><li><code>array[start : end : step]</code>: the same three numbers as <code>np.arange</code>.</li><li><code>a</code> holds the positions 0 to 9: one for each restaurant.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>Start and end are left empty. What does <code>a[::2]</code> give?</div></div>
+  <pre class="py" data-file="step_slicing.py">a = np.arange(10)
+print(a)
+print(a[::2])</pre>
+  <div class="vote">
+    <div class="vopt" data-win>[0 2 4 6 8]</div>
+    <div class="vopt">[0 1]</div>
+    <div class="vopt">[2 4 6 8 10]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[0 1 2 3 4 5 6 7 8 9]
+[0 2 4 6 8]</div>
+    <ul class="b">
+      <li>Empty start and end: the whole array.</li>
+      <li>Step 2: take one, skip one.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 84" xmlns="http://www.w3.org/2000/svg"><text x="320.0" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a</text><rect x="50" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="76" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">0</text><text x="76" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="132" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><text x="132" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="188" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><text x="188" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="244" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><text x="244" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="300" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><text x="300" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="356" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="412" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="412" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="468" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">7</text><text x="468" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="524" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">8</text><text x="524" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="580" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">9</text><text x="580" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="34" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">a[::2]: every second element.</div></div>
+  <ul class="b" data-brk><li>On our data: <code>votes[::2]</code> gives <code>[ 775  918  166 2556  504]</code>, the votes of the five places to visit.</li></ul>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a fixed rule, every second place, picks the visits. Nobody picks favourites.</div>
+</section>
+
+<section class="step" data-nav="Reverse" data-tag="Slicing">
+  <h2>A negative step walks backwards</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> orders are stored oldest first. The "Your orders" screen must show the newest first.</div></div>
+  <div class="ask"><span class="ic">✋</span><div><code>a</code> holds 0 to 9, oldest to newest. What does <code>a[::-1]</code> give?</div></div>
+  <pre class="py" data-file="step_slicing.py">print(a[::-1])</pre>
+  <div class="vote">
+    <div class="vopt">[0 1 2 3 4 5 6 7 8 9]: no change</div>
+    <div class="vopt" data-win>[9 8 7 6 5 4 3 2 1 0]</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[9 8 7 6 5 4 3 2 1 0]</div>
+    <ul class="b">
+      <li>Step -1: start at the end, move left one at a time. The array is reversed.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>And <code>a[::-2]</code>?</div></div>
+  <pre class="py" data-file="step_slicing.py">print(a[::-2])</pre>
+  <div class="vote">
+    <div class="vopt">[8 6 4 2 0]</div>
+    <div class="vopt" data-win>[9 7 5 3 1]</div>
+    <div class="vopt">[0 2 4 6 8]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[9 7 5 3 1]</div>
+    <ul class="b">
+      <li>Start at the last element, 9. Then jump two to the left each time.</li>
+      <li>The step is the size of the jump. It is not a position.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 84" xmlns="http://www.w3.org/2000/svg"><text x="320.0" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a</text><rect x="50" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="76" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">0</text><text x="76" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="132" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><text x="132" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="188" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><text x="188" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><text x="244" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><text x="300" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="356" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="356" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="412" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="412" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="468" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">7</text><text x="468" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="40" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="524" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">8</text><text x="524" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="40" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="580" y="61.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">9</text><text x="580" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="34" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">a[::-2]: from the end, every second element.</div></div>
+  <div class="take"><code>start : end : step</code>. A negative step reverses the direction.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> newest first is one slice: <code>[::-1]</code>.</div>
+</section>
+
+<section class="step" data-nav="Quiz: steps" data-tag="Slicing">
+  <h2>Quick check: steps</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What is <code>arr[::-3]</code>?</div>
+    <pre class="py" data-file="x.py" data-nocopy>arr = np.arange(10)</pre>
+    <div class="opts">
+      <button class="opt"><code>[0 3 6 9]</code></button>
+      <button class="opt"><code>[10 7 4 1]</code></button>
+      <button class="opt">An error</button>
+      <button class="opt" data-ok><code>[9 6 3 0]</code></button>
+    </div>
+    <div class="expl"><b>[9 6 3 0].</b> A negative step starts at the last element, 9, and jumps three to the left: 9, 6, 3, 0. There is no 10 in the array.
+<div class="diag"><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="76" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">0</text><text x="76" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="132" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><text x="132" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="188" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><text x="188" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><text x="244" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="356" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="412" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="412" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="468" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">7</text><text x="468" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="524" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">8</text><text x="524" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="580" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">9</text><text x="580" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">arr[::-3]</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">And <code>arr[1:8:3]</code>?</div>
+    <pre class="py" data-file="x.py" data-nocopy>arr = np.arange(10)</pre>
+    <div class="opts">
+      <button class="opt" data-ok><code>[1 4 7]</code></button>
+      <button class="opt"><code>[1 3 5 7]</code></button>
+      <button class="opt"><code>[3 6]</code></button>
+      <button class="opt"><code>[1 4 7 10]</code></button>
+    </div>
+    <div class="expl"><b>[1 4 7].</b> Start at 1, jump by 3, stop before 8: positions 1, 4 and 7.
+<div class="diag"><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="76" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">0</text><text x="76" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="132" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><text x="132" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="188" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><text x="188" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="244" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><text x="244" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="300" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><text x="356" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="412" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="412" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="468" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">7</text><text x="468" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="524" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">8</text><text x="524" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="580" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">9</text><text x="580" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">arr[1:8:3]</div></div></div>
+  </div>
+  <div class="take blk" data-brk><b>Block recap:</b> <code>np.arange</code> makes IDs and filter values. <code>[start:end:step]</code> picks every n-th one. A negative step gives newest first.</div>
+</section>
+
+<section class="step" data-nav="A photo is an array" data-tag="Data Detective">
+  <h2>Data Detective: a photo is an array</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> every restaurant card on the app shows a photo. The app needs small square thumbnails of all of them.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>To Python, what is a photo?</div></div>
+  <pre class="py" data-file="a_photo_is_an_array.py" data-wide>from sklearn.datasets import load_sample_image
+import matplotlib.pyplot as plt
+
+img = load_sample_image("china.jpg")
+print(type(img))
+print(img.shape, img.dtype)
+plt.imshow(img)</pre>
+  <div class="vote">
+    <div class="vopt">A special picture object</div>
+    <div class="vopt" data-win>A NumPy array of numbers</div>
+    <div class="vopt">One long piece of text</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">&lt;class 'numpy.ndarray'&gt;
+(427, 640, 3) uint8</div>
+    <ul class="b">
+      <li>427 rows, 640 columns, and 3 numbers for every dot: red, green, blue.</li>
+      <li><code>uint8</code>: whole numbers from 0 to 255.</li>
+      <li><code>plt.imshow</code> draws an array as a picture. It is the one new line here.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x24" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x24r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x24g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="40" y="26" width="200" height="134" rx="4" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="140" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#4338ca">640 columns</text><text x="34" y="97" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">427</text><text x="34" y="113" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">rows</text><text x="140" y="98" text-anchor="middle" font-size="13" fill="#0f172a">the photo</text><rect x="40" y="26" width="10" height="10" fill="#0f172a"/><line x1="54" y1="31" x2="318" y2="31" stroke="#64748b" stroke-width="2" marker-end="url(#k961x24)"/><text x="186" y="48" text-anchor="middle" font-size="12" fill="#475569">one dot: img[0, 0]</text><rect x="324" y="14" width="78" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="363" y="35.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">174</text><text x="363" y="66" text-anchor="middle" font-size="12" fill="#475569">red</text><rect x="408" y="14" width="78" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="447" y="35.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">201</text><text x="447" y="66" text-anchor="middle" font-size="12" fill="#475569">green</text><rect x="492" y="14" width="78" height="34" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="531" y="35.5" text-anchor="middle" font-size="14" font-family="Menlo,monospace" fill="#0f172a">231</text><text x="531" y="66" text-anchor="middle" font-size="12" fill="#475569">blue</text><text x="450" y="104" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">shape (427, 640, 3)</text><text x="450" y="126" text-anchor="middle" font-size="12" fill="#475569">rows, columns, colour values</text></svg><div class="cap">Every dot of the photo is three numbers from 0 to 255.</div></div>
+  <div class="ask"><span class="ic">🎤</span><div>So slicing a photo changes the picture. Guess each one, then run it in Colab.</div></div>
+  <table class="tbl" data-cells>
+    <tr><th>You write</th><th>What you see</th></tr>
+    <tr><td><code>plt.imshow(img[100:300, 200:500])</code></td><td>a crop: rows 100 to 299, columns 200 to 499</td></tr>
+    <tr><td><code>plt.imshow(img[::-1])</code></td><td>the photo upside down: the rows are reversed</td></tr>
+    <tr><td><code>plt.imshow(img[:, ::-1])</code></td><td>a mirror image: the columns are reversed</td></tr>
+    <tr><td><code>plt.imshow(img[::4, ::4])</code></td><td>a smaller photo: every 4th row and column</td></tr>
+    <tr><td><code>plt.imshow(255 - img)</code></td><td>the negative: every number taken away from 255</td></tr>
+  </table>
+  <div class="take">Crop, flip, mirror, shrink: all of it is slicing. A colour photo is a 3D array.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a thumbnail is a slice: <code>img[::4, ::4]</code> is a photo 4 times smaller, from one line.</div>
+  <ul class="b" data-brk><li>The photo comes with scikit-learn: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_sample_image.html" target="_blank">load_sample_image</a>.</li></ul>
+</section>
+
+<section class="step" data-nav="A mask" data-tag="Filtering">
+  <h2>Filtering starts with a question for every element</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> a "Popular" filter on the listing: only the places with 500 votes or more.</div></div>
+  <ul class="b"><li>Shopping and food apps are full of filters, for example "rating 4 and above" or "cost under ₹200". Every filter starts the same way.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>Which restaurants have 500 votes or more? What does this print?</div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-hl="5">votes = np.array([
+    775, 787, 918, 88, 166,
+    286, 2556, 324, 504, 402])
+
+print(votes &gt;= 500)</pre>
+  <div class="vote">
+    <div class="vopt">[775 787 918 2556 504]</div>
+    <div class="vopt" data-win>True or False for each restaurant</div>
+    <div class="vopt">One answer: True</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[ True  True  True False False False  True False  True False]</div>
+    <ul class="b">
+      <li>The comparison runs on every element: one True or False each.</li>
+      <li>Read it position by position: the first True is for 775. The fourth, False, is for 88.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 696 98" xmlns="http://www.w3.org/2000/svg"><text x="118" y="32" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="118" y="76" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes &gt;= 500</text><rect x="128" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="154" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="128" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="184" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="184" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="240" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="266" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="240" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="296" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="296" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="322" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="352" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="352" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="378" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="408" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="408" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="434" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="464" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="490" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="464" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="520" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="520" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="546" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="576" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="602" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="576" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="632" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="632" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="658" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text></svg><div class="cap">Same length, same order: answer number 4 belongs to value number 4.</div></div>
+  <ul class="b" data-brk><li>This array of True and False is called a <b>mask</b>. Why?</li><li>A mask covers some things and lets others show. Think of a sheet of paper with holes, laid over the array.</li></ul>
+  <div class="diag"><svg viewBox="0 0 696 132" xmlns="http://www.w3.org/2000/svg"><text x="118" y="32" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="118" y="84" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">the mask on top</text><rect x="122" y="56" width="568" height="46" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/><rect x="128" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="154" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="128" y="62" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="154.0" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">True</text><rect x="184" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="184" y="62" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="210.0" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">True</text><rect x="240" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="266" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="240" y="62" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="266.0" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">True</text><rect x="296" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="322.0" y="122" text-anchor="middle" font-size="11" fill="#b91c1c">False</text><rect x="352" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="378.0" y="122" text-anchor="middle" font-size="11" fill="#b91c1c">False</text><rect x="408" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="434.0" y="122" text-anchor="middle" font-size="11" fill="#b91c1c">False</text><rect x="464" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="490" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="464" y="62" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><text x="490.0" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">True</text><rect x="520" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="546.0" y="122" text-anchor="middle" font-size="11" fill="#b91c1c">False</text><rect x="576" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="602" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="576" y="62" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="602.0" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">True</text><rect x="632" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="658.0" y="122" text-anchor="middle" font-size="11" fill="#b91c1c">False</text></svg><div class="cap">True is a hole: the value shows through. False is covered.</div></div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> every filter button on a listing page is a mask over the data.</div>
+</section>
+
+<section class="step" data-nav="Use the mask" data-tag="Filtering">
+  <h2>The mask is a gatekeeper</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> now show only those places on the screen.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>True: you may enter. False: you stay out. Put the mask inside the brackets. What comes back?</div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-hl="5">votes = np.array([
+    775, 787, 918, 88, 166,
+    286, 2556, 324, 504, 402])
+
+print(votes[votes &gt;= 500])</pre>
+  <div class="vote">
+    <div class="vopt">[ True&nbsp; True&nbsp; True False … ]</div>
+    <div class="vopt" data-win>[775 787 918 2556 504]</div>
+    <div class="vopt">[0 1 2 6 8]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[ 775  787  918 2556  504]</div>
+    <ul class="b">
+      <li>Only the elements where the mask is True come through.</li>
+      <li>No loop and no if. One line filters the whole array.</li>
+    </ul>
+    
+  </div>
+  <ul class="b" data-brk><li>How to read it: from the inside out, in two steps.</li></ul>
+  <div class="anat"><div class="a"><code>votes &gt;= 500</code><div class="m">Step 1, inside the brackets: ask every element the question. This makes the mask.</div></div><div class="a"><code>votes[ mask ]</code><div class="m">Step 2, outside: from votes, keep the values where the mask is True.</div></div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-wide>mask = votes &gt;= 500
+print(mask)
+print(votes[mask])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[ True  True  True False False False  True False  True False]
+[ 775  787  918 2556  504]</div>
+    <ul class="b">
+      <li>The same thing in two lines. The one-line form only skips the name <code>mask</code>.</li>
+      <li>Say it aloud: "from votes, the ones where votes is 500 or more".</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 696 142" xmlns="http://www.w3.org/2000/svg"><text x="118" y="32" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="118" y="76" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes &gt;= 500</text><text x="118" y="120" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">what comes back</text><rect x="128" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="154" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="128" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="128" y="98" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="184" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="184" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="184" y="98" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="240" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="266" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="240" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="240" y="98" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="296" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="296" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="322" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="352" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="352" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="378" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="408" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="408" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="434" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="464" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="490" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="464" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="464" y="98" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="520" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="520" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="546" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="576" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="602" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="576" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="576" y="98" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="119.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="632" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="632" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="658" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text></svg><div class="cap">True lets the value through. False stops it.</div></div>
+  <ul class="b" data-brk><li>See it move: <a href="https://aiml-v-izs.vercel.app/v/fd-r8w5n3p2/boolean-mask?embed=1" target="_blank">Boolean masking visualizer</a>.</li></ul>
+  <div class="take">A condition makes a mask. The mask filters the array.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> the "Popular" list on the app is <code>votes[votes &gt;= 500]</code>: five places.</div>
+</section>
+
+<section class="step" data-nav="One mask, two arrays" data-tag="Filtering">
+  <h2>A mask from one array can filter another</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> my question from Class 1: are popular places more expensive? First I need the costs of the popular places.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Position 0 is the same restaurant in votes and in costs. What does the last line give?</div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-hl="3" data-wide>clean_costs = np.char.strip(costs, "'").astype(float)
+print(clean_costs)
+print(clean_costs[votes &gt;= 500])</pre>
+  <div class="vote">
+    <div class="vopt">The costs that are 500 or more</div>
+    <div class="vopt" data-win>The costs of the restaurants with 500 votes or more</div>
+    <div class="vopt">An error: the mask belongs to votes</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[800. 800. 800. 300. 600. 600. 600. 700. 550. 500.]
+[800. 800. 800. 600. 550.]</div>
+    <ul class="b">
+      <li>The mask comes from votes. It filters costs.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 696 146" xmlns="http://www.w3.org/2000/svg"><text x="118" y="16" text-anchor="end" font-size="12" font-weight="700" fill="#4f46e5">position</text><text x="118" y="46" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="118" y="86" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes &gt;= 500</text><text x="118" y="126" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">clean_costs</text><text x="154.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="128" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="154" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="128" y="64" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="128" y="104" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800</text><text x="210.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="184" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="184" y="64" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="184" y="104" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800</text><text x="266.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="240" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="266" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="240" y="64" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="240" y="104" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">800</text><text x="322.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="296" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="296" y="64" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="322" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="296" y="104" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">300</text><text x="378.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="352" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="352" y="64" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="378" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="352" y="104" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">600</text><text x="434.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="408" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="408" y="64" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="434" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="408" y="104" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">600</text><text x="490.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="464" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="490" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="464" y="64" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="464" y="104" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">600</text><text x="546.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="520" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="520" y="64" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="546" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="520" y="104" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">700</text><text x="602.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="576" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="602" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="576" y="64" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="576" y="104" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">550</text><text x="658.0" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><rect x="632" y="24" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="45.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="632" y="64" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="658" y="85.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="632" y="104" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">500</text></svg><div class="cap">Matched by position: the True at position 6 picks the cost at position 6.</div></div>
+  <ul class="b" data-brk><li>The mask knows nothing about restaurants. It works by <b>position</b>: True at position 6 picks position 6.</li><li>This is called <b>boolean indexing</b>: indexing with True and False.</li><li>votes and clean_costs are <b>parallel arrays</b>: the same position is the same restaurant.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>And when the two do not match? This mask has 5 values. clean_costs has 10.</div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-wide>short = votes[:5] &gt;= 500
+print(clean_costs[short])</pre>
+  <div class="vote">
+    <div class="vopt">The first 5 are filtered, the rest are kept</div>
+    <div class="vopt">The first 5 are filtered, the rest are dropped</div>
+    <div class="vopt" data-win>An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">IndexError: boolean index did not match indexed array along axis 0; size of axis is 10 but size of corresponding boolean axis is 5</span></div>
+    <ul class="b">
+      <li>The mask needs one True or False for every element.</li>
+      <li>Worse: the same length in a different order gives no error, only a wrong answer. Keep parallel arrays in the same order.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>Now the manager's question: are popular places more expensive?</div></div>
+  <pre class="py" data-file="filtering_with_masks.py" data-wide>print(clean_costs[votes &gt;= 500].mean())
+print(clean_costs[votes &lt; 500].mean())</pre>
+  <div class="vote">
+    <div class="vopt" data-win>Yes: popular places cost more</div>
+    <div class="vopt">No: popular places cost less</div>
+    <div class="vopt">They cost the same</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">710.0
+540.0</div>
+    <ul class="b">
+      <li>Popular places: ₹710 for two. The rest: ₹540.</li>
+      <li>Only 10 restaurants here. The full data comes later in the module.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> in this sample, popular places cost ₹710 for two against ₹540. A "Popular" list is not a budget list: show the cost next to it.</div>
+</section>
+
+<section class="step" data-nav="Two conditions" data-tag="Filtering">
+  <h2>Two conditions at once</h2>
+  <div class="ai"><b>🤖 AI moment</b> — ask Gemini in Colab. Before you run its code, read it: which symbol joins the two conditions?<div class="pr">"I have two NumPy arrays: votes (restaurant vote counts) and costs (average cost per person). Write NumPy code to find restaurants where votes > 500 AND cost < 700."</div></div>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">Marketing:</b> a "Popular and affordable" collection for the home screen: over 500 votes AND under ₹700 for two.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Which line works?</div></div>
+  <div class="vote">
+    <div class="vopt"><code>votes[votes &gt; 500 and clean_costs &lt; 700]</code></div>
+    <div class="vopt" data-win><code>votes[(votes &gt; 500) &amp; (clean_costs &lt; 700)]</code></div>
+    <div class="vopt"><code>votes[votes &gt; 500 &amp; clean_costs &lt; 700]</code></div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li><code>&amp;</code> joins two masks, element by element: True only where both are True.</li>
+      <li><code>and</code> fails: it wants one True or False, not ten of them. ValueError.</li>
+      <li>The round brackets are needed. Without them <code>&amp;</code> runs before <code>&gt;</code>. TypeError.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="filtering_with_masks.py" data-wide>mask = (votes &gt; 500) &amp; (clean_costs &lt; 700)
+print(votes[mask])
+print(clean_costs[mask])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[2556  504]
+[600. 550.]</div>
+    <ul class="b">
+      <li>Two restaurants pass both gates: 2556 votes at ₹600, and 504 votes at ₹550.</li>
+    </ul>
+    
+  </div>
+  <div class="take">Each condition in round brackets, joined by <code>&amp;</code>.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> the collection has two places. Every extra condition makes the list shorter, so marketing must choose the rules with care.</div>
+</section>
+
+<section class="step" data-nav="Your turn" data-tag="Filtering">
+  <h2>Your turn: a fitness band</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">A fitness band company:</b> do happy users walk more? (Another business, the same tool.)</div></div>
+  <ul class="b"><li>The band records the mood and the step count of each user.</li></ul>
+  <pre class="py" data-file="filtering_with_masks.py" data-wide>mood = np.array(["Happy", "Sad", "Happy", "Sad",
+                 "Happy", "Happy", "Sad", "Happy"])
+steps = np.array([9200, 4100, 10500, 5200,
+                  8700, 11000, 3900, 9600])</pre>
+  <div class="ask"><span class="ic">✍️</span><div>Write one line: the average steps of the happy users. <span class="timer" data-sec="90"></span></div></div>
+  <button class="rv" data-reveal="next">Show</button>
+  <div class="reveal">
+    
+    <pre class="py" data-file="filtering_with_masks.py" data-wide>print(steps[mood == "Happy"].mean())
+print(steps[mood == "Sad"].mean())</pre><div class="out">9800.0
+4400.0</div><ul class="b"><li>The mask comes from mood. It filters steps.</li><li>In this sample, happy users walk more. It is sample data, not a study.</li></ul>
+  </div>
+</section>
+
+<section class="step" data-nav="Quiz: masks" data-tag="Filtering">
+  <h2>Quick check: masks</h2>
+  <div class="quiz" data-level="s" data-wide>
+    <div class="qt">What does this print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>a = np.array([5, 1, 8, 3, 9])
+print(a[a &gt; 4])</pre>
+    <div class="opts">
+      <button class="opt"><code>[ True False&nbsp; True False&nbsp; True]</code></button>
+      <button class="opt" data-ok><code>[5 8 9]</code></button>
+      <button class="opt"><code>[0 2 4]</code></button>
+      <button class="opt"><code>[1 3]</code></button>
+    </div>
+    <div class="expl"><b>[5 8 9].</b> The mask is True for 5, 8 and 9. Inside the brackets, it lets only those values through.
+<div class="diag"><svg viewBox="0 0 560 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">a &gt; 4</text><text x="260" y="30" text-anchor="start" font-size="13" fill="#334155">[ True False  True False  True]: the mask</text><rect x="16" y="50" width="230" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="131" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">a[a &gt; 4]</text><text x="260" y="72" text-anchor="start" font-size="13" fill="#047857">[5 8 9]: the values</text></svg><div class="cap">The mask, then the filter.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">What does this print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>votes = np.array([
+    775, 787, 918, 88, 166,
+    286, 2556, 324, 504, 402])
+
+print((votes &gt;= 500).sum())</pre>
+    <div class="opts">
+      <button class="opt">5540: those votes, added</button>
+      <button class="opt">An error: True cannot be added</button>
+      <button class="opt" data-ok>5</button>
+      <button class="opt">True</button>
+    </div>
+    <div class="expl"><b>5.</b> True counts as 1 and False as 0: Boolean becomes Integer. So the sum of a mask <b>counts</b> how many passed: 5 restaurants. To add the votes themselves, write <code>votes[votes &gt;= 500].sum()</code>: 5540.
+<div class="diag"><svg viewBox="0 0 696 98" xmlns="http://www.w3.org/2000/svg"><text x="118" y="32" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="118" y="76" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes &gt;= 500</text><rect x="128" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="154" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="128" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="154" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="184" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="210" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="184" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="210" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="240" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="266" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="240" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="266" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="296" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="322" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="296" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="322" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="352" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="378" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="352" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="378" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="408" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="434" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="408" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="434" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="464" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="490" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="464" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="490" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="520" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="546" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="520" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="546" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="576" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="602" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="576" y="54" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="602" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="632" y="10" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="658" y="31.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="632" y="54" width="52" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="658" y="75.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text></svg><div class="cap">Five Trues: the sum is 5.</div></div></div>
+  </div>
+  <div class="take blk" data-brk><b>Block recap:</b> A condition makes a mask; the mask filters this array or a parallel one. <code>&amp;</code> joins conditions. Answered: popular places cost more, ₹710 against ₹540.</div>
+</section>
+
+<section class="step" data-nav="column_stack" data-tag="Tables">
+  <h2>Two arrays, one table</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> I do not want two lists. Give me one sheet: one row per restaurant, votes and cost side by side.</div></div>
+  <ul class="b"><li><code>votes</code> and <code>clean_costs</code> are parallel: position 0 is the same restaurant.</li><li>A table keeps them together: one row per restaurant, one column per fact.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div><code>np.column_stack</code> puts each array in a column. What is the shape of the table?</div></div>
+  <pre class="py" data-file="column_stack.py" data-wide>data = np.column_stack((votes, clean_costs))
+print(data.shape)</pre>
+  <div class="vote">
+    <div class="vopt" data-win>(10, 2)</div>
+    <div class="vopt">(2, 10)</div>
+    <div class="vopt">(20,)</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">(10, 2)</div>
+    <ul class="b">
+      <li>10 rows: one per restaurant. 2 columns: votes, then cost.</li>
+      <li><code>np.array([votes, clean_costs])</code> gives <code>(2, 10)</code>: each array becomes a row. That is why Class 2 needed <code>.T</code>.</li>
+    </ul>
+    
+  </div>
+  <div class="diag"><svg viewBox="0 0 640 182" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x25" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x25r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x25g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="75.0" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">votes</text><rect x="40" y="28" width="70" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="75" y="46.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="40" y="60" width="70" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="75" y="78.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="40" y="92" width="70" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="75" y="110.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="40" y="124" width="70" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="75" y="142.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="175.0" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">clean_costs</text><rect x="140" y="28" width="70" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="175" y="46.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><rect x="140" y="60" width="70" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="175" y="78.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><rect x="140" y="92" width="70" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="175" y="110.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><rect x="140" y="124" width="70" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="175" y="142.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><line x1="226" y1="88" x2="300" y2="88" stroke="#64748b" stroke-width="2" marker-end="url(#k961x25)"/><text x="263" y="76" text-anchor="middle" font-size="11" fill="#475569">column_stack</text><text x="440" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 0</text><text x="522" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">column 1</text><text x="392" y="47" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 0</text><rect x="400" y="28" width="80" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="440" y="46.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775.</text><rect x="482" y="28" width="80" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="522" y="46.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="392" y="79" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 1</text><rect x="400" y="60" width="80" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="440" y="78.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787.</text><rect x="482" y="60" width="80" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="522" y="78.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="392" y="111" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 2</text><rect x="400" y="92" width="80" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="440" y="110.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918.</text><rect x="482" y="92" width="80" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="522" y="110.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="392" y="143" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 3</text><rect x="400" y="124" width="80" height="28" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="440" y="142.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88.</text><rect x="482" y="124" width="80" height="28" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="522" y="142.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><text x="482" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">one row = one restaurant</text></svg><div class="cap">Position 0 of each array becomes row 0. Each array becomes a column.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Look at the votes now. Why is 775 printed as <code>775.</code>?</div></div>
+  <pre class="py" data-file="column_stack.py">print(data[:3])</pre>
+  <div class="vote">
+    <div class="vopt">A bug in column_stack</div>
+    <div class="vopt" data-win>One type only: the costs are floats, so the votes became floats</div>
+    <div class="vopt">NumPy rounds every number</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[775. 800.]
+ [787. 800.]
+ [918. 800.]]</div>
+    <ul class="b">
+      <li>An array holds one type. Float can hold both columns, so every number is a float.</li>
+      <li>The value does not change: 775. is 775.0.</li>
+    </ul>
+    
+  </div>
+  <div class="take"><code>np.column_stack((a, b))</code>: each array becomes a column. Mind the double round brackets.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> one row is one restaurant, so a later filter or sort can never pull a place apart from its cost.</div>
+</section>
+
+<section class="step" data-nav="Quiz: column_stack" data-tag="Tables">
+  <h2>Quick check: column_stack</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">A cart of 4 dishes: price, quantity and rating, three arrays of 4 values each. What is the shape?</div>
+    <pre class="py" data-file="x.py" data-nocopy>price  = np.array([99, 149, 49, 199])
+qty    = np.array([2, 1, 5, 1])
+rating = np.array([4.5, 3.9, 4.1, 4.8])
+t = np.column_stack((price, qty, rating))
+print(t.shape)</pre>
+    <div class="opts">
+      <button class="opt"><code>(3, 4)</code></button>
+      <button class="opt"><code>(12,)</code></button>
+      <button class="opt" data-ok><code>(4, 3)</code></button>
+      <button class="opt"><code>(4,)</code></button>
+    </div>
+    <div class="expl"><b>(4, 3).</b> Each array becomes a column, so there are 3 columns. Each has 4 values, so there are 4 rows. Rows first: <code>(4, 3)</code>. <code>np.array([price, qty, rating])</code> would give <code>(3, 4)</code> instead.
+<div class="diag"><svg viewBox="0 0 640 164" xmlns="http://www.w3.org/2000/svg"><text x="272.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">price</text><text x="360.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">qty</text><text x="448.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">rating</text><text x="219" y="49" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 0</text><rect x="229" y="30" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="272" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">99</text><rect x="317" y="30" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="360" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="405" y="30" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="448" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4.5</text><text x="219" y="81" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 1</text><rect x="229" y="62" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="272" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">149</text><rect x="317" y="62" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="360" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="405" y="62" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="448" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">3.9</text><text x="219" y="113" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 2</text><rect x="229" y="94" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="272" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">49</text><rect x="317" y="94" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="360" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="405" y="94" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="448" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4.1</text><text x="219" y="145" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 3</text><rect x="229" y="126" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="272" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">199</text><rect x="317" y="126" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="360" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="405" y="126" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="448" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4.8</text></svg><div class="cap">3 arrays, 3 columns. 4 values each, 4 rows.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="reshape" data-tag="Tables">
+  <h2><code>reshape</code>: same numbers, new rows and columns</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> the home screen shows restaurant cards in a grid, 3 cards in each row.</div></div>
+  <ul class="b"><li><code>reshape</code> changes the shape and keeps the numbers.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>9 restaurant IDs, from <code>np.arange(1, 10)</code>. What does <code>reshape(3, 3)</code> give?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>ids = np.arange(1, 10)
+print(ids.reshape(3, 3))</pre>
+  <div class="vote">
+    <div class="vopt" data-win>[[1 2 3] [4 5 6] [7 8 9]]</div>
+    <div class="vopt">[[1 4 7] [2 5 8] [3 6 9]]</div>
+    <div class="vopt">An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[1 2 3]
+ [4 5 6]
+ [7 8 9]]</div>
+    <ul class="b">
+      <li>NumPy fills the first row, then the next: reading order, left to right.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x26r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x26g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="86" y="12" width="48" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="110" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="138" y="12" width="48" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="162" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="190" y="12" width="48" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="214" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="242" y="12" width="48" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="266" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="294" y="12" width="48" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="318" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="346" y="12" width="48" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="370" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="398" y="12" width="48" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="422" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">7</text><rect x="450" y="12" width="48" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="474" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">8</text><rect x="502" y="12" width="48" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="526" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">9</text><line x1="320" y1="50" x2="320" y2="76" stroke="#64748b" stroke-width="2" marker-end="url(#k961x26)"/><text x="332" y="68" text-anchor="start" font-size="12" fill="#475569">reshape(3, 3)</text><rect x="233" y="84" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="260" y="103.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="291" y="84" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="318" y="103.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="349" y="84" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="376" y="103.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="233" y="118" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="260" y="137.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="291" y="118" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="318" y="137.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="349" y="118" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="376" y="137.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="233" y="152" width="54" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="260" y="171.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">7</text><rect x="291" y="152" width="54" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="318" y="171.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">8</text><rect x="349" y="152" width="54" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="376" y="171.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">9</text></svg><div class="cap">The same 9 IDs, refilled into 3 rows of 3.</div></div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> the grid on screen is the list in reading order: restaurant 1 top left, restaurant 9 bottom right.</div>
+  <ul class="b" data-brk><li>See it move: <a href="https://aiml-v-izs.vercel.app/v/fd-r8w5n3p2/reshape?embed=1" target="_blank">Reshape and transpose visualizer</a>.</li></ul>
+</section>
+
+<section class="step" data-nav="When reshape fails" data-tag="Tables">
+  <h2>When the numbers do not fit</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> a 10th restaurant joined. Same 3 × 3 grid?</div></div>
+  <div class="ask"><span class="ic">✋</span><div>10 IDs now. What does <code>reshape(3, 3)</code> do?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>ids = np.arange(1, 11)
+print(ids.size)
+ids.reshape(3, 3)</pre>
+  <div class="vote">
+    <div class="vopt">It drops the last number</div>
+    <div class="vopt">It adds a zero at the end</div>
+    <div class="vopt" data-win>An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">10
+ValueError: cannot reshape array of size 10 into shape (3,3)</span></div>
+    <ul class="b">
+      <li>3 rows of 3 hold 9 numbers. There are 10.</li>
+      <li>NumPy never drops or invents data. It refuses.</li>
+    </ul>
+    
+  </div>
+  <ul class="b" data-brk><li>The rule: rows × columns must equal the size.</li></ul>
+  <table class="tbl" data-cells>
+    <tr><th>10 numbers into</th><th>Works?</th></tr>
+    <tr><td><code>reshape(2, 5)</code></td><td>yes: 2 × 5 = 10</td></tr>
+    <tr><td><code>reshape(5, 2)</code></td><td>yes: 5 × 2 = 10</td></tr>
+    <tr><td><code>reshape(10, 1)</code></td><td>yes: 10 × 1 = 10</td></tr>
+    <tr><td><code>reshape(3, 4)</code></td><td>no: 3 × 4 = 12, an error</td></tr>
+  </table>
+  <div class="take biz"><b class="who">Why the business needs this:</b> an error here is good news: no restaurant silently disappears from the screen.</div>
+</section>
+
+<section class="step" data-nav="-1" data-tag="Tables">
+  <h2><code>-1</code>: let NumPy work it out</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> a phone shows 2 cards in a row, a tablet 5. We do not want to count the rows by hand for every screen.</div></div>
+  <div class="anat" data-brk><div class="a"><code>reshape(-1, 2)</code><div class="m">2 columns. You work out the rows.</div></div><div class="a"><code>reshape(5, -1)</code><div class="m">5 rows. You work out the columns.</div></div></div>
+  <div class="ask"><span class="ic">✋</span><div>10 IDs, 2 cards in a row. What is the shape after <code>reshape(-1, 2)</code>?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>ids = np.arange(1, 11)
+print(ids.reshape(-1, 2))</pre>
+  <div class="vote">
+    <div class="vopt">(2, 5)</div>
+    <div class="vopt" data-win>(5, 2)</div>
+    <div class="vopt">An error: -1 is not a size</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[ 1  2]
+ [ 3  4]
+ [ 5  6]
+ [ 7  8]
+ [ 9 10]]</div>
+    <ul class="b">
+      <li>10 IDs, 2 in each row: 10 ÷ 2 = 5 rows.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 258" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x27" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x27r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x27g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="60" y="12" width="48" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="84" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="112" y="12" width="48" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="164" y="12" width="48" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="188" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="216" y="12" width="48" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="240" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="268" y="12" width="48" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="292" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="320" y="12" width="48" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="344" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="372" y="12" width="48" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="396" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">7</text><rect x="424" y="12" width="48" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="448" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">8</text><rect x="476" y="12" width="48" height="30" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="500" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">9</text><rect x="528" y="12" width="48" height="30" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="552" y="31.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">10</text><line x1="320" y1="50" x2="320" y2="76" stroke="#64748b" stroke-width="2" marker-end="url(#k961x27)"/><text x="332" y="68" text-anchor="start" font-size="12" fill="#475569">reshape(5, 2)</text><rect x="262" y="84" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="289" y="103.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="320" y="84" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="347" y="103.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="262" y="118" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="289" y="137.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="320" y="118" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="347" y="137.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="262" y="152" width="54" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="289" y="171.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="320" y="152" width="54" height="30" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="347" y="171.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="262" y="186" width="54" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="289" y="205.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">7</text><rect x="320" y="186" width="54" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="347" y="205.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">8</text><rect x="262" y="220" width="54" height="30" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="289" y="239.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">9</text><rect x="320" y="220" width="54" height="30" rx="6" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/><text x="347" y="239.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">10</text></svg><div class="cap">-1 means: whatever fits.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>And 3 cards in a row, <code>reshape(-1, 3)</code>, on the same 10 IDs?</div></div>
+  <div class="vote">
+    <div class="vopt">(3, 3)</div>
+    <div class="vopt">(3, 4)</div>
+    <div class="vopt" data-win>An error</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">ValueError: cannot reshape array of size 10 into shape (3)</span></div>
+    <ul class="b">
+      <li>10 ÷ 3 is not a whole number. -1 does not make the numbers fit.</li>
+      <li>Only one -1 is allowed. <code>reshape(-1, -1)</code> gives: <code>can only specify one unknown dimension</code>.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> one line works for every screen size; the -1 is the number nobody had to count.</div>
+</section>
+
+<section class="step" data-nav="Where -1 shows up" data-tag="Tables">
+  <h2>Where <code>reshape(-1, 1)</code> shows up</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The data science team:</b> can a model predict the cost for two from the votes?</div></div>
+  <ul class="b"><li>scikit-learn is the machine learning library you will meet later in the course.</li><li>It wants a table: one row per sample, one column per feature.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>Give a model our votes as they are, one row of 10. What happens?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(votes, clean_costs)</pre>
+  <div class="vote">
+    <div class="vopt">The model learns</div>
+    <div class="vopt" data-win>An error that says how to fix it</div>
+    <div class="vopt">It learns from the first vote only</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out"><span class="err">ValueError: Expected 2D array, got 1D array instead:
+array=[ 775  787  918   88  166  286 2556  324  504  402].
+Reshape your data either using array.reshape(-1, 1) if your data has a single feature or array.reshape(1, -1) if it contains a single sample.</span></div>
+    <ul class="b">
+      <li>A 1D array is not a table. The error itself names the fix.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="reshape.py" data-wide>X = votes.reshape(-1, 1)
+print(X.shape)
+model.fit(X, clean_costs)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">(10, 1)</div>
+    <ul class="b">
+      <li>One column, as many rows as needed: 10 rows, 1 feature. The model accepts it.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 66" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x28" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x28r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x28g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><rect x="159" y="12" width="61" height="40" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="189.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">(10,)</text><line x1="223" y1="32.0" x2="243" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x28)"/><rect x="246" y="12" width="132" height="40" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="312" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">reshape(-1, 1)</text><line x1="381" y1="32.0" x2="401" y2="32.0" stroke="#64748b" stroke-width="2" marker-end="url(#k961x28)"/><rect x="404" y="12" width="77" height="40" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="442.5" y="36.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">(10, 1)</text></svg><div class="cap">A row of 10 becomes a column of 10.</div></div>
+  <div class="take">Every library has a shape it expects. <code>reshape</code> is how you meet it.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a model is only as good as the data it accepts. One reshape line stands between our data and the model.</div>
+</section>
+
+<section class="step" data-nav="reshape or .T?" data-tag="Tables">
+  <h2><code>reshape</code> or <code>.T</code>?</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> turn my sheet for a slide: restaurants across, not down.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>First a small one. <code>a</code> has shape (2, 3). <code>a.T</code> and <code>a.reshape(3, 2)</code> both have shape (3, 2). Are they the same table?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>a = np.arange(1, 7).reshape(2, 3)
+print(a.T)
+print(a.reshape(3, 2))</pre>
+  <div class="vote">
+    <div class="vopt">Yes: same shape, same table</div>
+    <div class="vopt" data-win>No: same shape, different order</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[1 4]
+ [2 5]
+ [3 6]]
+[[1 2]
+ [3 4]
+ [5 6]]</div>
+    <ul class="b">
+      <li><code>.T</code> turns each row into a column. 1, 2, 3 stays together.</li>
+      <li><code>reshape</code> refills the numbers in reading order. 1, 2, 3 is split.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg"><text x="100" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a</text><rect x="44" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="71" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="102" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="129" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="160" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="187" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="44" y="64" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="71" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="102" y="64" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="129" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="160" y="64" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="187" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="356" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a.T</text><rect x="300" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="327" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="358" y="30" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="385" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="300" y="64" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="327" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="358" y="64" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="385" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="300" y="98" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="327" y="117.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="358" y="98" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="385" y="117.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="536" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">a.reshape(3, 2)</text><rect x="480" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="507" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="538" y="30" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="565" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="480" y="64" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="507" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="538" y="64" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="565" y="83.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="480" y="98" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="507" y="117.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="538" y="98" width="54" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="565" y="117.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><text x="330" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">rows became columns</text><text x="538" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">refilled in reading order</text></svg><div class="cap">Green was row 0 of a. With .T it stays together. With reshape it is split.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Now the manager's sheet. Row 0 should be the votes. Which line gets it right?</div></div>
+  <pre class="py" data-file="reshape.py" data-wide>print(data.T[0, :4])
+print(data.reshape(2, 10)[0, :4])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[775. 787. 918.  88.]
+[775. 800. 787. 800.]</div>
+    <ul class="b">
+      <li><code>data.T</code>: row 0 is the votes, 775, 787, 918, 88.</li>
+      <li><code>data.reshape(2, 10)</code>: votes and rupees mixed, 775 votes, then ₹800, then 787 votes. No error.</li>
+    </ul>
+    
+  </div>
+  <div class="take">To swap rows and columns, use <code>.T</code>. <code>reshape</code> can mix up your data: use it with care.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a reshape here gives a slide that looks right and is wrong. No error warns you.</div>
+</section>
+
+<section class="step" data-nav="Reshape playground" data-tag="Tables">
+  <h2>A playground in Colab</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The app team:</b> before we pick a grid, can we try every size?</div></div>
+  <ul class="b"><li>In Colab, <code>#@param</code> turns a line into a slider or a box. Change it, and the cell runs again.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>18 numbers, 4 rows. What does the explorer print?</div></div>
+  <pre class="py" data-file="reshape_explorer.py" data-wide>#@title Reshape explorer
+total = 18   #@param {type:"slider", min:4, max:24, step:2}
+rows = 4     #@param {type:"integer"}
+
+arr = np.arange(1, total + 1)
+try:
+    print(arr.reshape(rows, -1))
+except ValueError:
+    print(total, "numbers do not fit in", rows, "rows")
+    fits = [r for r in range(1, total + 1) if total % r == 0]
+    print("Try:", fits)</pre>
+  <div class="vote">
+    <div class="vopt">A table of 4 rows and 5 columns</div>
+    <div class="vopt" data-win>A message, and the row counts that work</div>
+    <div class="vopt">A table of 4 rows, with 2 numbers left over</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">18 numbers do not fit in 4 rows
+Try: [1, 2, 3, 6, 9, 18]</div>
+    <ul class="b">
+      <li>18 ÷ 4 is not whole, so reshape fails and <code>except</code> catches it.</li>
+      <li>The list shows every row count that divides 18. Try each one on the slider.</li>
+    </ul>
+    
+  </div>
+  <div class="take blk" data-brk><b>Block recap:</b> <code>column_stack</code> builds the sheet. <code>reshape</code> lays numbers out (rows × columns = size; <code>-1</code> works out one side). <code>.T</code> turns a table; reshape does not.</div>
+</section>
+
+<section class="step" data-nav="Aggregates" data-tag="Aggregates">
+  <h2>Many numbers, one answer</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> one slide for the weekly review: total votes, average cost, the most votes, the cheapest place.</div></div>
+  <ul class="b"><li>Many rows in, one number out. These are <b>aggregates</b>.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div><code>data[:, 0]</code> is the votes column. What is the first line?</div></div>
+  <pre class="py" data-file="aggregates.py" data-hl="1">print(data[:, 0].sum())
+print(data[:, 1].mean())
+print(data[:, 0].max())
+print(data[:, 1].min())</pre>
+  <div class="vote">
+    <div class="vopt" data-win>6806.0</div>
+    <div class="vopt">680.6</div>
+    <div class="vopt">2556.0</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">6806.0
+625.0
+2556.0
+300.0</div>
+    <ul class="b">
+      <li>Total votes: 6806. Average cost for two: ₹625, as in Class 2.</li>
+      <li>Most votes: 2556. Cheapest: ₹300.</li>
+      <li><code>np.sum(x)</code> and <code>x.sum()</code> do the same thing. So do <code>mean</code>, <code>max</code>, <code>min</code>.</li>
+    </ul>
+    
+  </div>
+  <div class="diag"><svg viewBox="0 0 640 182" xmlns="http://www.w3.org/2000/svg"><text x="316.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="404.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">clean_costs</text><text x="263" y="49" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 0</text><rect x="273" y="30" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="316" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775.</text><rect x="361" y="30" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="81" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 1</text><rect x="273" y="62" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="316" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787.</text><rect x="361" y="62" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="113" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 2</text><rect x="273" y="94" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="316" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918.</text><rect x="361" y="94" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="145" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 3</text><rect x="273" y="126" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="316" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88.</text><rect x="361" y="126" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><text x="360.0" y="170" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">…</text></svg><div class="cap">data[:, 0] is the green column: every row, column 0.</div></div>
+  <ul class="b" data-brk><li>Watch rows and columns collapse: <a href="https://aiml-v-izs.vercel.app/v/fd-r8w5n3p2/aggregation?embed=1" target="_blank">Aggregations visualizer</a>.</li></ul>
+  <div class="take biz"><b class="who">Why the business needs this:</b> four numbers from the whole table are the weekly slide. With 10 lakh restaurants it is still four lines.</div>
+</section>
+
+<section class="step" data-nav="Standard deviation" data-tag="Aggregates">
+  <h2>Same average, different story</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">Operations:</b> two restaurants both average 30 minutes to deliver. Can each one show "Delivery in 30 min" on its card?</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Last three orders. A: 28, 30, 32 minutes. B: 10, 30, 50 minutes. Which one can make the promise?</div></div>
+  <div class="vote">
+    <div class="vopt" data-win>Restaurant A</div>
+    <div class="vopt">Restaurant B</div>
+    <div class="vopt">Both: the average is the same</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>A is always near 30. B is sometimes 10 and sometimes 50: the average describes none of its orders well.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="aggregates.py" data-wide>a = np.array([28, 30, 32])
+b = np.array([10, 30, 50])
+print(a.mean(), b.mean())
+print(a.std().round(2), b.std().round(2))</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">30.0 30.0
+1.63 16.33</div>
+    <ul class="b">
+      <li><code>std</code>, the standard deviation, measures how far the values sit from the average.</li>
+      <li>Small std: the average is reliable. Big std: the average hides late orders.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 140" xmlns="http://www.w3.org/2000/svg"><line x1="60.0" y1="112" x2="576.0" y2="112" stroke="#94a3b8" stroke-width="1.5"/><line x1="60.0" y1="108" x2="60.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="60.0" y="132" text-anchor="middle" font-size="11" fill="#475569">0 min</text><line x1="146.0" y1="108" x2="146.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="146.0" y="132" text-anchor="middle" font-size="11" fill="#475569">10 min</text><line x1="232.0" y1="108" x2="232.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="232.0" y="132" text-anchor="middle" font-size="11" fill="#475569">20 min</text><line x1="318.0" y1="108" x2="318.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="318.0" y="132" text-anchor="middle" font-size="11" fill="#475569">30 min</text><line x1="404.0" y1="108" x2="404.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="404.0" y="132" text-anchor="middle" font-size="11" fill="#475569">40 min</text><line x1="490.0" y1="108" x2="490.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="490.0" y="132" text-anchor="middle" font-size="11" fill="#475569">50 min</text><line x1="576.0" y1="108" x2="576.0" y2="116" stroke="#94a3b8" stroke-width="1.5"/><text x="576.0" y="132" text-anchor="middle" font-size="11" fill="#475569">60 min</text><line x1="318.0" y1="14" x2="318.0" y2="112" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 4"/><text x="324.0" y="12" text-anchor="start" font-size="11" font-weight="700" fill="#4338ca">average 30</text><circle cx="300.79999999999995" cy="40" r="8" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><circle cx="318.0" cy="40" r="8" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><circle cx="335.2" cy="40" r="8" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="60.0" y="28" text-anchor="start" font-size="12" font-weight="700" fill="#0f172a">Restaurant A: std 1.63</text><circle cx="146.0" cy="82" r="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><circle cx="318.0" cy="82" r="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><circle cx="490.0" cy="82" r="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="60.0" y="70" text-anchor="start" font-size="12" font-weight="700" fill="#0f172a">Restaurant B: std 16.33</text></svg><div class="cap">Same average. A sits close to it; B is spread out.</div></div>
+  <ul class="b" data-brk><li>Real: quick-commerce apps in India built their brand on "10-minute delivery". Blinkit dropped the claim from its ads in January 2026, after the labour ministry raised rider-safety concerns (<a href="https://inc42.com/buzz/blinkit-drops-10-minute-delivery-claim-after-govt-push/" target="_blank">Inc42</a>). A promise is a business decision, not just a number.</li></ul>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a delivery promise needs a small average <b>and</b> a small std. With B, the app should show a range, or fix the kitchen first.</div>
+</section>
+
+<section class="step" data-nav="axis=0" data-tag="Aggregates">
+  <h2>Totals for every column: <code>axis=0</code></h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">Operations:</b> how many riders do we need on Friday, Saturday and Sunday? Here are the orders of 3 restaurants: one row per restaurant, one column per day.</div></div>
+  <ul class="b"><li>A plain sum gives one number for the whole table: 227 orders. Operations needs one total for every day.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div>What does <code>np.sum(orders, axis=0)</code> give?</div></div>
+  <pre class="py" data-file="axis.py" data-wide>orders = np.array([[20, 35, 30],
+                   [12, 18, 15],
+                   [25, 40, 32]])
+print(np.sum(orders, axis=0))</pre>
+  <div class="vote">
+    <div class="vopt">227</div>
+    <div class="vopt" data-win>[57 93 77]</div>
+    <div class="vopt">[85 45 97]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[57 93 77]</div>
+    <ul class="b">
+      <li>Friday: 20 + 12 + 25 = 57. Saturday: 93. Sunday: 77.</li>
+      <li>axis=0 adds <b>down</b> the rows. The row direction disappears: one total per column, here one per day.</li>
+    </ul>
+    
+  </div>
+  <div class="diag"><svg viewBox="0 0 640 206" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x29" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x29r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x29g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="247.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Fri</text><text x="307.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Sat</text><text x="367.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Sun</text><text x="210" y="54" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">restaurant 0</text><text x="210" y="90" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">restaurant 1</text><text x="210" y="126" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">restaurant 2</text><rect x="220" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">20</text><rect x="280" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">35</text><rect x="340" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">30</text><rect x="220" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">12</text><rect x="280" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">18</text><rect x="340" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">15</text><rect x="220" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">25</text><rect x="280" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">40</text><rect x="340" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">32</text><line x1="247.0" y1="144" x2="247.0" y2="164" stroke="#10b981" stroke-width="2" marker-end="url(#k961x29)"/><rect x="220" y="168" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="247" y="187.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">57</text><line x1="307.0" y1="144" x2="307.0" y2="164" stroke="#10b981" stroke-width="2" marker-end="url(#k961x29)"/><rect x="280" y="168" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="307" y="187.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">93</text><line x1="367.0" y1="144" x2="367.0" y2="164" stroke="#10b981" stroke-width="2" marker-end="url(#k961x29)"/><rect x="340" y="168" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="367" y="187.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">77</text><text x="206" y="188" text-anchor="end" font-size="13" font-weight="700" fill="#047857">axis=0</text><text x="420" y="90" text-anchor="start" font-size="12" fill="#475569">down each column:</text><text x="420" y="108" text-anchor="start" font-size="12" fill="#475569">the rows disappear</text></svg><div class="cap">axis=0: one total per day. [57 93 77]: Saturday is the busiest.</div></div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> Saturday is the busiest day, 93 orders: plan the most riders for Saturday.</div>
+</section>
+
+<section class="step" data-nav="axis=1" data-tag="Aggregates">
+  <h2>Totals for every row: <code>axis=1</code></h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> and which restaurant was busiest over the weekend?</div></div>
+  <div class="ask"><span class="ic">✋</span><div>One total per restaurant: <code>np.sum(orders, axis=1)</code>?</div></div>
+  <pre class="py" data-file="axis.py">print(np.sum(orders, axis=1))</pre>
+  <div class="vote">
+    <div class="vopt" data-win>[85 45 97]</div>
+    <div class="vopt">[57 93 77]</div>
+    <div class="vopt">227</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[85 45 97]</div>
+    <ul class="b">
+      <li>Restaurant 0: 20 + 35 + 30 = 85. Restaurant 1: 45. Restaurant 2: 97.</li>
+      <li>axis=1 adds <b>across</b> each row. The column direction disappears: one total per row, here one per restaurant.</li>
+    </ul>
+    
+  </div>
+  <div class="diag"><svg viewBox="0 0 640 174" xmlns="http://www.w3.org/2000/svg"><defs><marker id="k961x30" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker><marker id="k961x30r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="k961x30g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#10b981"/></marker></defs><text x="247.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Fri</text><text x="307.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Sat</text><text x="367.0" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">Sun</text><rect x="220" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">20</text><rect x="280" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">35</text><rect x="340" y="34" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">30</text><rect x="220" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">12</text><rect x="280" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">18</text><rect x="340" y="70" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">15</text><rect x="220" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="247" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">25</text><rect x="280" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="307" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">40</text><rect x="340" y="106" width="54" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="367" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">32</text><line x1="398" y1="49" x2="422" y2="49" stroke="#10b981" stroke-width="2" marker-end="url(#k961x30)"/><rect x="426" y="34" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="453" y="53.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">85</text><line x1="398" y1="85" x2="422" y2="85" stroke="#10b981" stroke-width="2" marker-end="url(#k961x30)"/><rect x="426" y="70" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="453" y="89.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">45</text><line x1="398" y1="121" x2="422" y2="121" stroke="#10b981" stroke-width="2" marker-end="url(#k961x30)"/><rect x="426" y="106" width="54" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="453" y="125.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">97</text><text x="453" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">axis=1</text><text x="206" y="78" text-anchor="end" font-size="12" fill="#475569">across each row:</text><text x="206" y="96" text-anchor="end" font-size="12" fill="#475569">the columns disappear</text></svg><div class="cap">axis=1: one total per restaurant. [85 45 97]</div></div>
+  <table class="tbl" data-cells>
+    <tr><th>You write</th><th>You get</th></tr>
+    <tr><td><code>np.sum(orders)</code></td><td>227: one number for everything</td></tr>
+    <tr><td><code>np.sum(orders, axis=0)</code></td><td>one total per day: the rows disappear</td></tr>
+    <tr><td><code>np.sum(orders, axis=1)</code></td><td>one total per restaurant: the columns disappear</td></tr>
+  </table>
+  <div class="take" data-brk>The axis you name is the one that disappears. In Excel: axis=0 is the total row at the bottom, axis=1 the total column on the right.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> restaurant 2 is the busiest, 97 orders; restaurant 1 had only 45 and may need an offer.</div>
+</section>
+
+<section class="step" data-nav="axis on our table" data-tag="Aggregates">
+  <h2><code>axis</code> on the restaurant table</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> the average votes and the average cost, both in one line, please.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>One line for the average of every column of <code>data</code>: votes and cost. Which axis?</div></div>
+  <div class="vote">
+    <div class="vopt" data-win>axis=0</div>
+    <div class="vopt">axis=1</div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>One answer per column: the rows must disappear. axis=0.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="axis.py">print(data.mean(axis=0))</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[680.6 625. ]</div>
+    <ul class="b">
+      <li>Average votes: 680.6. Average cost for two: ₹625. One line, both columns.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>And <code>data.sum(axis=1)</code>?</div></div>
+  <pre class="py" data-file="axis.py">print(data.sum(axis=1)[:3])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[1575. 1587. 1718.]</div>
+    <ul class="b">
+      <li>775 votes + ₹800 = 1575. NumPy does it without a complaint.</li>
+      <li>Votes plus rupees means nothing. The code runs; the question was wrong.</li>
+    </ul>
+    
+  </div>
+  <div class="take" data-brk>NumPy checks the shape, not the meaning. You check the meaning.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a number that runs is not a number that means something. Votes plus rupees goes on no slide.</div>
+</section>
+
+<section class="step" data-nav="Quiz: axis" data-tag="Aggregates">
+  <h2>Quick check: axis</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt"><code>t</code> has shape <code>(3, 4)</code>. What is the shape of <code>t.sum(axis=1)</code>?</div>
+    <pre class="py" data-file="x.py" data-nocopy>t = np.ones((3, 4))
+print(t.sum(axis=1).shape)</pre>
+    <div class="opts">
+      <button class="opt" data-ok><code>(3,)</code></button>
+      <button class="opt"><code>(4,)</code></button>
+      <button class="opt"><code>(1, 4)</code></button>
+      <button class="opt">A single number</button>
+    </div>
+    <div class="expl"><b>(3,).</b> axis=1 makes the columns disappear. What is left is one total for each of the 3 rows.
+<div class="diag"><svg viewBox="0 0 640 164" xmlns="http://www.w3.org/2000/svg"><text x="217.0" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">4 columns</text><line x1="110" y1="32" x2="324" y2="32" stroke="#6366f1" stroke-width="2"/><text x="88" y="104.0" text-anchor="end" font-size="13" font-weight="700" fill="#b45309">3 rows</text><line x1="98" y1="46" x2="98" y2="152" stroke="#f59e0b" stroke-width="2"/><rect x="110" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="164" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="190" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="218" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="272" y="46" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="298" y="67.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="110" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="164" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="190" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="218" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="272" y="82" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="298" y="103.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="110" y="118" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="136" y="139.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="164" y="118" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="190" y="139.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="218" y="118" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="244" y="139.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="272" y="118" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="298" y="139.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="372" y="34" width="150" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="447" y="54.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">shape = (3, 4)</text><text x="532" y="55" text-anchor="start" font-size="12" fill="#475569">rows, columns</text><rect x="372" y="76" width="150" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="447" y="96.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">size = 3 × 4 = 12</text><text x="532" y="97" text-anchor="start" font-size="12" fill="#475569">every element</text><rect x="372" y="118" width="150" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="447" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">ndim = 2</text><text x="532" y="139" text-anchor="start" font-size="12" fill="#475569">two directions</text></svg><div class="cap">axis=1 adds across: 3 rows, so 3 totals.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">What does <code>data.max(axis=0)</code> give for our table?</div>
+    <pre class="py" data-file="x.py" data-nocopy>print(data.max(axis=0))</pre>
+    <div class="opts">
+      <button class="opt"><code>2556.0</code></button>
+      <button class="opt"><code>[800. 800. 800. …]</code></button>
+      <button class="opt"><code>[2556. 800.]</code>, and both come from one restaurant</button>
+      <button class="opt" data-ok><code>[2556. 800.]</code>: the top of each column</button>
+    </div>
+    <div class="expl"><b>[2556. 800.]: the top of each column.</b> Each column is checked on its own. 2556 votes is restaurant 6, which costs ₹600. ₹800 is restaurants 0, 1 and 2. The two numbers do not belong to one restaurant.
+<div class="diag"><svg viewBox="0 0 640 278" xmlns="http://www.w3.org/2000/svg"><text x="316.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="404.0" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">clean_costs</text><text x="263" y="49" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 0</text><rect x="273" y="30" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">775.</text><rect x="361" y="30" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="404" y="48.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="81" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 1</text><rect x="273" y="62" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">787.</text><rect x="361" y="62" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="404" y="80.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="113" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 2</text><rect x="273" y="94" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">918.</text><rect x="361" y="94" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="404" y="112.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">800.</text><text x="263" y="145" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 3</text><rect x="273" y="126" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88.</text><rect x="361" y="126" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="144.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><text x="263" y="177" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 4</text><rect x="273" y="158" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="176.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166.</text><rect x="361" y="158" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="176.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">600.</text><text x="263" y="209" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 5</text><rect x="273" y="190" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="316" y="208.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">286.</text><rect x="361" y="190" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="208.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">600.</text><text x="263" y="241" text-anchor="end" font-size="12" font-weight="700" fill="#b45309">row 6</text><rect x="273" y="222" width="86" height="28" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="316" y="240.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">2556.</text><rect x="361" y="222" width="86" height="28" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="404" y="240.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">600.</text><text x="360.0" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">…</text></svg><div class="cap">The largest vote and the largest cost sit in different rows.</div></div></div>
+  </div>
+</section>
+
+<section class="step" data-nav="Your turn" data-tag="Aggregates">
+  <h2>Your turn: the ₹800 restaurants</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">A restaurant owner:</b> my place costs ₹800 for two. Do the ₹800 places get more votes than the average place, 680.6?</div></div>
+  <div class="ask"><span class="ic">✍️</span><div>One line: the average votes of the restaurants that cost ₹800 for two. Use a mask from today. <span class="timer" data-sec="90"></span></div></div>
+  <button class="rv" data-reveal="next">Show</button>
+  <div class="reveal">
+    
+    <pre class="py" data-file="aggregates.py" data-wide>print(votes[clean_costs == 800].mean())</pre><div class="out">826.6666666666666</div><ul class="b"><li>The mask comes from <code>clean_costs</code>. It filters <code>votes</code>. Then <code>mean</code> gives one answer.</li><li>Three restaurants: 775, 787 and 918 votes.</li><li>Yes: about 826.7 against 680.6. Only 3 places, so it is a hint, not proof.</li></ul>
+  </div>
+  <div class="take blk" data-brk><b>Block recap:</b> <code>sum</code>, <code>mean</code>, <code>max</code>, <code>min</code>, <code>std</code> turn many numbers into one. <code>axis=0</code>: one answer per column; <code>axis=1</code>: one per row. A mask first, then an aggregate, answers a question about a group.</div>
+</section>
+
+<section class="step" data-nav="any and all" data-tag="Logic">
+  <h2>Is there any? Is it all?</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> before the weekly slide goes out, check the data. Is <b>any</b> cost above ₹3000, a typing mistake? Is <b>every</b> cost below ₹5000?</div></div>
+  <div class="ask"><span class="ic">✋</span><div>What do these two lines print?</div></div>
+  <pre class="py" data-file="any_all_where.py" data-wide>print(np.any(clean_costs &gt; 3000))
+print(np.all(clean_costs &lt; 5000))</pre>
+  <div class="vote">
+    <div class="vopt" data-win>False, then True</div>
+    <div class="vopt">True, then False</div>
+    <div class="vopt">Ten values, then ten values</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">False
+True</div>
+    <ul class="b">
+      <li><code>np.any</code>: is at least one True? No cost is above ₹3000: False.</li>
+      <li><code>np.all</code>: is every one True? Every cost is below ₹5000: True.</li>
+      <li>Each gives one True or False, not an array.</li>
+    </ul>
+    
+  </div>
+  <div class="diag"><svg viewBox="0 0 560 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">np.any(mask)</text><text x="260" y="30" text-anchor="start" font-size="13" fill="#334155">True if at least one is True</text><rect x="16" y="50" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">np.all(mask)</text><text x="260" y="72" text-anchor="start" font-size="13" fill="#334155">True only if every one is True</text></svg><div class="cap">One answer for the whole array.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>A "Top rated" badge needs every one of the last 3 months above 4.2. A restaurant has 4.5, 4.3 and 4.1. What does <code>np.all(ratings &gt; 4.2)</code> give?</div></div>
+  <div class="vote">
+    <div class="vopt">True</div>
+    <div class="vopt" data-win>False</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">False</div>
+    <ul class="b">
+      <li>4.1 fails. One failure is enough to make <code>all</code> False: no badge this time.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> <code>any</code> and <code>all</code> are the checks that stop a typo, say ₹80000 for two, from reaching the manager's slide.</div>
+  <ul class="b" data-brk><li>Explore them: <a href="https://aiml-v-izs.vercel.app/v/fd-r8w5n3p2/logical?embed=1" target="_blank">Logical operators visualizer</a>.</li></ul>
+</section>
+
+<section class="step" data-nav="np.where" data-tag="Logic">
+  <h2><code>np.where</code>: if-else for every element</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> a badge on every restaurant card: "Popular" for 500 votes or more, "New" for the rest.</div></div>
+  <div class="anat" data-brk><div class="a"><code>np.where(condition, a, b)</code><div class="m">for each element: a where the condition is True, b where it is False</div></div></div>
+  <div class="ask"><span class="ic">✋</span><div>A small one first. Delivery partners rated 4.2 or more get a green flag. What prints?</div></div>
+  <pre class="py" data-file="any_all_where.py" data-wide>ratings = np.array([4.9, 4.1, 4.8])
+print(np.where(ratings &gt;= 4.2,
+               "Green Flag", "Red Flag"))</pre>
+  <div class="vote">
+    <div class="vopt" data-win>['Green Flag' 'Red Flag' 'Green Flag']</div>
+    <div class="vopt">['Green Flag']</div>
+    <div class="vopt">[ True False  True]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">['Green Flag' 'Red Flag' 'Green Flag']</div>
+    <ul class="b">
+      <li>One label for every rating. No loop, no <code>if</code>.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>Now the badges on our restaurants: one for every card.</div></div>
+  <pre class="py" data-file="any_all_where.py" data-wide>tags = np.where(votes &gt;= 500, "Popular", "New")
+print(tags)</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">['Popular' 'Popular' 'Popular' 'New' 'New' 'New' 'Popular' 'New' 'Popular'
+ 'New']</div>
+    <ul class="b">
+      <li>A new column of labels, made from a condition.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 718 134" xmlns="http://www.w3.org/2000/svg"><text x="140" y="31" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="140" y="73" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes &gt;= 500</text><text x="140" y="115" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">np.where(…)</text><rect x="150" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="176" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="150" y="52" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="176" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="150" y="94" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="176" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">Popular</text><rect x="206" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="232" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="206" y="52" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="232" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="206" y="94" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="232" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">Popular</text><rect x="262" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="288" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="262" y="52" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="288" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="262" y="94" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="288" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">Popular</text><rect x="318" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="344" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="318" y="52" width="52" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="344" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="318" y="94" width="52" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="344" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">New</text><rect x="374" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="400" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="374" y="52" width="52" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="400" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="374" y="94" width="52" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="400" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">New</text><rect x="430" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="456" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="430" y="52" width="52" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="456" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="430" y="94" width="52" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="456" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">New</text><rect x="486" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="512" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="486" y="52" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="512" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="486" y="94" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="512" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">Popular</text><rect x="542" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="568" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="542" y="52" width="52" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="568" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="542" y="94" width="52" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="568" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">New</text><rect x="598" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="624" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="598" y="52" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="624" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">True</text><rect x="598" y="94" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="624" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">Popular</text><rect x="654" y="10" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="680" y="30.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="654" y="52" width="52" height="32" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="680" y="72.5" text-anchor="middle" font-size="11" font-family="Menlo,monospace" fill="#0f172a">False</text><rect x="654" y="94" width="52" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="680" y="114.5" text-anchor="middle" font-size="10" font-family="Menlo,monospace" fill="#0f172a">New</text></svg><div class="cap">True takes the first value. False takes the second.</div></div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> one line badges every card: no loop, whether there are 10 places or 10 lakh.</div>
+</section>
+
+<section class="step" data-nav="np.where: positions" data-tag="Logic">
+  <h2>Without the two values: the positions</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">Marketing:</b> give us the row numbers of the popular places. We will send them an offer.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Leave out the two values. What does <code>np.where</code> give now?</div></div>
+  <pre class="py" data-file="any_all_where.py">print(np.where(votes &gt;= 500))</pre>
+  <div class="vote">
+    <div class="vopt">[ 775  787  918 2556  504]</div>
+    <div class="vopt" data-win>(array([0, 1, 2, 6, 8]),)</div>
+    <div class="vopt">[ True  True  True False …]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">(array([0, 1, 2, 6, 8]),)</div>
+    <ul class="b">
+      <li>The <b>positions</b> where the condition is True: 0, 1, 2, 6 and 8.</li>
+      <li>It comes inside round brackets, a tuple: one array for each direction. A 1D array has one.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 72" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="76" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="76" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="106" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="132" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="132" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="162" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="188" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="188" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="218" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="244" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="244" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="274" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="300" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="330" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="356" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="356" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="386" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="412" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><text x="412" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="442" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="468" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="468" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="498" y="28" width="52" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="524" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="524" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="554" y="28" width="52" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="580" y="49.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="580" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><text x="42" y="22" text-anchor="end" font-size="11" fill="#4f46e5">index</text></svg><div class="cap">Positions 0, 1, 2, 6 and 8 hold 500 votes or more.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>No restaurant costs more than ₹1000. What then?</div></div>
+  <pre class="py" data-file="any_all_where.py">print(np.where(clean_costs &gt; 1000))</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">(array([], dtype=int64),)</div>
+    <ul class="b">
+      <li>An empty array: no position matched. Not an error.</li>
+      <li>To read the docs in Colab: <code>help(np.where)</code>.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> positions are what you hand on: to another array, or to another team.</div>
+</section>
+
+<section class="step" data-nav="Quiz: logic" data-tag="Logic">
+  <h2>Quick check: any, all, where</h2>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">Which is true about <code>np.any()</code> and <code>np.all()</code>?</div>
+    
+    <div class="opts">
+      <button class="opt">Both return an array of True and False, the same shape as the input</button>
+      <button class="opt"><code>np.any()</code> checks that all are True; <code>np.all()</code> checks that one is</button>
+      <button class="opt">Both work only on 1D arrays</button>
+      <button class="opt" data-ok>Both return one True or False, unless you give an axis</button>
+    </div>
+    <div class="expl"><b>One True or False.</b> By default they look at the whole array. With <code>axis</code> they answer once per row or column, like <code>sum</code>.
+<div class="diag"><svg viewBox="0 0 560 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="230" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="131" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">np.any([F, F, T])</text><text x="260" y="30" text-anchor="start" font-size="13" fill="#047857">True: at least one</text><rect x="16" y="50" width="230" height="34" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="131" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">np.all([F, F, T])</text><text x="260" y="72" text-anchor="start" font-size="13" fill="#b91c1c">False: not every one</text></svg><div class="cap">One answer each.</div></div></div>
+  </div>
+  <div class="quiz" data-level="t" data-wide>
+    <div class="qt">What does this print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>a = np.array([1, 3, 2, 5])
+print(np.where(a &gt; 2, 1, 0))</pre>
+    <div class="opts">
+      <button class="opt"><code>[3 5]</code></button>
+      <button class="opt" data-ok><code>[0 1 0 1]</code></button>
+      <button class="opt"><code>(array([1, 3]),)</code></button>
+      <button class="opt"><code>[1 0 1 0]</code></button>
+    </div>
+    <div class="expl"><b>[0 1 0 1].</b> With two values, <code>np.where</code> gives one value per element: 1 where <code>a &gt; 2</code>, 0 where not. 3 and 5 pass. <code>[3 5]</code> is what a mask gives: <code>a[a &gt; 2]</code>.
+<div class="diag"><svg viewBox="0 0 560 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">a &gt; 2</text><text x="260" y="30" text-anchor="start" font-size="13" fill="#334155">[False  True False  True]</text><rect x="16" y="50" width="230" height="34" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="131" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">np.where(a &gt; 2, 1, 0)</text><text x="260" y="72" text-anchor="start" font-size="13" fill="#047857">[0 1 0 1]</text></svg><div class="cap">True becomes 1, False becomes 0.</div></div></div>
+  </div>
+  <div class="take blk" data-brk><b>Block recap:</b> <code>np.any</code> and <code>np.all</code> check the data with one True or False. <code>np.where(c, a, b)</code> labels every element; <code>np.where(c)</code> gives the positions.</div>
+</section>
+
+<section class="step" data-nav="Sorting" data-tag="Sorting">
+  <h2>Sorting: smallest first, or largest first</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> a "Sort by: Popularity" button. Most votes first.</div></div>
+  <ul class="b"><li>Apps sort all the time, for example by rating, by price low to high, or by time. Whatever is shown first was sorted.</li></ul>
+  <div class="ask"><span class="ic">✋</span><div><code>np.sort(votes)</code> puts the smallest first. Which line gives the largest first?</div></div>
+  <div class="vote">
+    <div class="vopt"><code>np.sort(votes, reverse=True)</code></div>
+    <div class="vopt" data-win><code>np.sort(votes)[::-1]</code></div>
+    <div class="vopt"><code>np.sort(-votes)</code></div>
+  </div>
+  <button class="rv" data-reveal="next" data-vote="prev">Why</button>
+  <div class="reveal">
+    
+    <ul class="b">
+      <li>Sort, then reverse with a step of -1: the step slicing from today.</li>
+      <li><code>reverse=True</code> belongs to Python's <code>sorted()</code>. NumPy says: <code>TypeError: sort() got an unexpected keyword argument 'reverse'</code></li>
+      <li><code>np.sort(-votes)</code> sorts the right way but prints negative votes.</li>
+    </ul>
+    
+  </div>
+  <pre class="py" data-file="sorting.py" data-wide>print(np.sort(votes))
+print(np.sort(votes)[::-1])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[  88  166  286  324  402  504  775  787  918 2556]
+[2556  918  787  775  504  402  324  286  166   88]</div>
+    <ul class="b">
+      <li><code>np.sort</code> gives a sorted copy. <code>votes</code> itself does not change.</li>
+    </ul>
+    
+  </div>
+  <ul class="b" data-brk><li>Watch it: <a href="https://aiml-v-izs.vercel.app/v/fd-r8w5n3p2/sorting?embed=1" target="_blank">Sorting visualizer</a>.</li></ul>
+  <div class="take biz"><b class="who">Why the business needs this:</b> the top of a list is seen first, so what you sort by is a business choice.</div>
+</section>
+
+<section class="step" data-nav="argsort" data-tag="Sorting">
+  <h2><code>argsort</code>: the positions, in sorted order</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> my question from Class 1: which places are the most popular, and what do they cost? The votes alone do not tell me the cost.</div></div>
+  <div class="ask"><span class="ic">✋</span><div><code>np.argsort</code> does not move the votes. What does it give?</div></div>
+  <pre class="py" data-file="sorting.py">print(np.argsort(votes))</pre>
+  <div class="vote">
+    <div class="vopt">[  88  166  286 …]</div>
+    <div class="vopt" data-win>[3 4 5 7 9 8 0 1 2 6]</div>
+    <div class="vopt">[0 1 2 3 4 5 6 7 8 9]</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[3 4 5 7 9 8 0 1 2 6]</div>
+    <ul class="b">
+      <li>The positions, from the smallest vote to the largest.</li>
+      <li>Position 3 holds 88, the smallest. Position 6 holds 2556, the largest.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 718 158" xmlns="http://www.w3.org/2000/svg"><text x="140" y="14" text-anchor="end" font-size="12" font-weight="700" fill="#4f46e5">position</text><text x="140" y="43" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes</text><text x="140" y="91" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">np.argsort(votes)</text><text x="140" y="139" text-anchor="end" font-size="12" font-weight="700" fill="#0f172a">votes[that]</text><text x="176.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">0</text><rect x="150" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="176" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><rect x="150" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="176" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">3</text><rect x="150" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="176" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><text x="232.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">1</text><rect x="206" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="232" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><rect x="206" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="232" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">4</text><rect x="206" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="232" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><text x="288.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">2</text><rect x="262" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="288" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><rect x="262" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="288" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">5</text><rect x="262" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="288" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><text x="344.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">3</text><rect x="318" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="344" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">88</text><rect x="318" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="344" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">7</text><rect x="318" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="344" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><text x="400.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">4</text><rect x="374" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="400" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">166</text><rect x="374" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="400" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">9</text><rect x="374" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="400" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><text x="456.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">5</text><rect x="430" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="456" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">286</text><rect x="430" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="456" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">8</text><rect x="430" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="456" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><text x="512.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">6</text><rect x="486" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="512" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text><rect x="486" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="512" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">0</text><rect x="486" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="512" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">775</text><text x="568.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">7</text><rect x="542" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="568" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">324</text><rect x="542" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="568" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">1</text><rect x="542" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="568" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">787</text><text x="624.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">8</text><rect x="598" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="624" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">504</text><rect x="598" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="624" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2</text><rect x="598" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="624" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">918</text><text x="680.0" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">9</text><rect x="654" y="22" width="52" height="32" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="680" y="42.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">402</text><rect x="654" y="70" width="52" height="32" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/><text x="680" y="90.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">6</text><rect x="654" y="118" width="52" height="32" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="680" y="138.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">2556</text></svg><div class="cap">The smallest vote, 88, is at position 3. So argsort starts with 3.</div></div>
+  <div class="ask"><span class="ic">✋</span><div>Now the manager's question: what do the three most popular restaurants cost? Use the positions on the other array.</div></div>
+  <pre class="py" data-file="sorting.py" data-wide>order = np.argsort(votes)[::-1]
+print(votes[order][:3])
+print(clean_costs[order][:3])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[2556  918  787]
+[600. 800. 800.]</div>
+    <ul class="b">
+      <li>The same positions on <code>clean_costs</code>: each cost stays with its restaurant.</li>
+      <li>This is why argsort exists. Sort one array, keep its parallel arrays in step.</li>
+    </ul>
+    
+  </div>
+  <div class="take"><code>np.sort</code> gives the values. <code>np.argsort</code> gives the positions, to use on other arrays.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> the top three cost ₹600, ₹800 and ₹800. The most popular place is not the costliest.</div>
+</section>
+
+<section class="step" data-nav="Sorting a table" data-tag="Sorting">
+  <h2>Sorting a table</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The manager:</b> rank my sheet by votes. Every row must still be one restaurant.</div></div>
+  <ul class="b"><li>In 2D, <code>axis</code> says which way to sort. axis=1: each row on its own. axis=0: each column on its own.</li></ul>
+  <pre class="py" data-file="sorting.py" data-wide>m = np.array([[34, 11,  8],
+              [ 7, 45, 18],
+              [ 9, 23, 20]])
+print(np.sort(m, axis=1))
+print(np.sort(m, axis=0))</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[[ 8 11 34]
+ [ 7 18 45]
+ [ 9 20 23]]
+[[ 7 11  8]
+ [ 9 23 18]
+ [34 45 20]]</div>
+    <ul class="b">
+      <li>First table: every row sorted, left to right.</li>
+      <li>Second table: every column sorted, top to bottom.</li>
+    </ul>
+    
+  </div>
+  <div class="ask"><span class="ic">✋</span><div>Now our restaurant table, each column sorted on its own. Row 1 says 166 votes, ₹500. Is that a real restaurant?</div></div>
+  <pre class="py" data-file="sorting.py">print(np.sort(data, axis=0)[:3])</pre>
+  <div class="vote">
+    <div class="vopt">Yes</div>
+    <div class="vopt" data-win>No: the columns were sorted apart</div>
+  </div>
+  <button class="rv run" data-reveal="next" data-vote="prev">Run</button>
+  <div class="reveal">
+    <div class="out">[[ 88. 300.]
+ [166. 500.]
+ [286. 550.]]</div>
+    <ul class="b">
+      <li>The restaurant with 166 votes costs ₹600. ₹500 belongs to another one.</li>
+      <li>Sorting each column on its own breaks the rows apart.</li>
+    </ul>
+    
+  </div>
+  <div class="diag" data-brk><svg viewBox="0 0 640 176" xmlns="http://www.w3.org/2000/svg"><text x="124" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">np.sort(data, axis=0)</text><text x="82" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="168" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">cost</text><rect x="40" y="46" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="81" y="65.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88.</text><rect x="126" y="46" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="167" y="65.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><rect x="40" y="80" width="82" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="81" y="99.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166.</text><rect x="126" y="80" width="82" height="30" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/><text x="167" y="99.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">500.</text><rect x="40" y="114" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="81" y="133.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">286.</text><rect x="126" y="114" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="167" y="133.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">550.</text><text x="464" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">the real restaurants</text><text x="422" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">votes</text><text x="508" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">cost</text><rect x="380" y="46" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="421" y="65.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">88.</text><rect x="466" y="46" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="507" y="65.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">300.</text><rect x="380" y="80" width="82" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="421" y="99.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">166.</text><rect x="466" y="80" width="82" height="30" rx="6" fill="#dcfce7" stroke="#10b981" stroke-width="2"/><text x="507" y="99.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">600.</text><rect x="380" y="114" width="82" height="30" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="421" y="133.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">402.</text><rect x="466" y="114" width="82" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/><text x="507" y="133.5" text-anchor="middle" font-size="12" font-family="Menlo,monospace" fill="#0f172a">500.</text><text x="124" y="166" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">166 with ₹500: no such restaurant</text><text x="464" y="166" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">166 costs ₹600. ₹500 is the 402 one.</text></svg><div class="cap">Each column was sorted on its own, so the rows no longer match.</div></div>
+  <ul class="b" data-brk><li>To sort whole rows, use argsort on one column, then pick the rows:</li></ul>
+  <pre class="py" data-file="sorting.py" data-wide>print(data[np.argsort(data[:, 0])][:3])</pre>
+  <button class="rv run" data-reveal="next">Run</button>
+  <div class="reveal">
+    <div class="out">[[ 88. 300.]
+ [166. 600.]
+ [286. 600.]]</div>
+    <ul class="b">
+      <li>Now each row is still one restaurant, ordered by votes.</li>
+    </ul>
+    
+  </div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> sort whole rows with argsort, or the ranked sheet shows restaurants that do not exist.</div>
+</section>
+
+<section class="step" data-nav="Text sorts like a dictionary" data-tag="Sorting">
+  <h2>Numbers stored as text sort like words</h2>
+  <div class="ask biz"><span class="ic">💼</span><div><b class="who">The product team:</b> our costs first came as text. What if someone sorts them "low to high" before cleaning?</div></div>
+  <div class="quiz" data-level="m" data-wide>
+    <div class="qt">What does this print?</div>
+    <pre class="py" data-file="x.py" data-nocopy>prices = np.array(["800", "1200", "300", "550"])
+print(np.sort(prices))</pre>
+    <div class="opts">
+      <button class="opt"><code>['300' '550' '800' '1200']</code></button>
+      <button class="opt"><code>['800' '550' '300' '1200']</code></button>
+      <button class="opt" data-ok><code>['1200' '300' '550' '800']</code></button>
+      <button class="opt">An error</button>
+    </div>
+    <div class="expl"><b>['1200' '300' '550' '800'].</b> Text is compared letter by letter, as in a dictionary. "1200" starts with "1", so it comes before "3". Not a bug: text has no size, only letters.
+<div class="diag"><svg viewBox="0 0 560 94" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="29.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"1200"</text><text x="260" y="30" text-anchor="start" font-size="13" fill="#334155">starts with 1: first</text><rect x="16" y="50" width="230" height="34" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/><text x="131" y="71.5" text-anchor="middle" font-size="13" font-family="Menlo,monospace" fill="#0f172a">"300"  "550"  "800"</text><text x="260" y="72" text-anchor="start" font-size="13" fill="#334155">then 3, 5, 8</text></svg><div class="cap">First letters decide, not the size.</div></div></div>
+  </div>
+  <div class="take" data-brk>Check the dtype before you sort. Our costs came as text: clean them, convert them, then sort.</div>
+  <div class="take biz"><b class="who">Why the business needs this:</b> a "cost: low to high" list on text would show the ₹1200 place first. Convert to numbers, then sort.</div>
+  <div class="take blk" data-brk><b>Block recap:</b> <code>np.sort</code> gives the values, smallest first; <code>[::-1]</code> for largest first. <code>np.argsort</code> gives the positions, to keep a restaurant's numbers together. Text sorts like words.</div>
+</section>
+
+<section class="step" data-nav="Recap">
+  <h2>Recap</h2>
+  <div class="ask"><span class="ic">✍️</span><div>Two minutes. Three points you would tell a friend who missed today. <span class="timer" data-sec="120"></span></div></div>
+  <button class="rv" data-reveal="next">Compare</button>
+  <div class="reveal">
+    
+    <ul class="b"><li><code>np.arange(start, end, step)</code> makes numbers. <code>[start:end:step]</code> slices with a jump. A negative step reverses.</li><li><b>A mask</b> is an array of True and False. Inside the brackets it filters. Join two conditions with <code>&amp;</code>, each in round brackets.</li><li><code>np.column_stack</code> makes a table: each array becomes a column. <code>reshape</code> refills the numbers; rows × columns must equal the size; <code>-1</code> works out one side.</li><li><code>sum</code>, <code>mean</code>, <code>max</code>, <code>min</code>, <code>std</code> summarise. <code>axis=0</code>: one answer per column. <code>axis=1</code>: one per row.</li><li><code>np.any</code>, <code>np.all</code>: one True or False. <code>np.where(c, a, b)</code>: if-else for every element. <code>np.where(c)</code>: the positions.</li><li><code>np.sort</code> gives the values; <code>np.argsort</code> gives the positions, to keep parallel arrays together. Text sorts like words.</li></ul>
+  </div>
+  <ul class="b" data-brk><li><b>The business questions, answered</b> (10 restaurants only: a sample, not the whole city):</li></ul>
+  <table class="tbl" data-cells>
+    <tr><th>The question</th><th>Our answer</th></tr>
+    <tr><td>Are popular places more expensive?</td><td>Yes, here: ₹710 for two against ₹540.</td></tr>
+    <tr><td>Popular <b>and</b> affordable?</td><td>Two places: 2556 votes at ₹600, 504 votes at ₹550.</td></tr>
+    <tr><td>The weekly summary</td><td>6806 votes in all, ₹625 average, 2556 the most votes, ₹300 the cheapest.</td></tr>
+    <tr><td>Can a restaurant promise 30 minutes?</td><td>A can (std 1.63). B cannot (std 16.33).</td></tr>
+    <tr><td>Riders for the weekend</td><td>Most on Saturday: 93 orders.</td></tr>
+    <tr><td>Which cards get "Popular"?</td><td>Five: positions 0, 1, 2, 6 and 8.</td></tr>
+    <tr><td>The most popular places, and their cost</td><td>2556, 918 and 787 votes: ₹600, ₹800, ₹800.</td></tr>
+  </table>
+  <div class="take">Next class: maths on whole arrays. Matrix multiplication, broadcasting and <code>np.tile</code>.</div>
+</section>
+
+</div></main>
+<script src="../assets/lesson.js"></script>
+</body>
+</html>
